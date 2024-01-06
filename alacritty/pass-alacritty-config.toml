@@ -1,0 +1,77 @@
+live_config_reload = false
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "#676767"
+blue = "#6871ff"
+cyan = "#5ffdff"
+green = "#5ff967"
+magenta = "#ff76ff"
+red = "#ff6d67"
+white = "#fffeff"
+yellow = "#f7cd94"
+
+[colors.cursor]
+background = "#c7c7c7"
+foreground = "0x000000"
+
+[colors.normal]
+black = "#000000"
+blue = "#0225c7"
+cyan = "#00c5c7"
+green = "#00c200"
+magenta = "#c930c7"
+red = "#c91b00"
+white = "#c7c7c7"
+yellow = "#c7c400"
+
+[colors.primary]
+background = "#000000"
+foreground = "#c7c7c7"
+
+[cursor]
+blink_interval = 250
+blink_timeout = 0
+thickness = 0.4
+unfocused_hollow = false
+
+[cursor.style]
+blinking = "On"
+shape = "Underline"
+
+[env]
+COLORTERM = "truecolor"
+LANG = "en_US.UTF-8"
+TERM = "alacritty"
+
+[font]
+size = 14
+
+[font.glyph_offset]
+x = 0
+y = 3
+
+[font.normal]
+family = "Writer"
+
+[font.offset]
+x = 0
+y = 5
+
+[scrolling]
+history = 1000
+
+[window]
+decorations = "full"
+decorations_theme_variant = "Light"
+dynamic_padding = true
+
+[window.dimensions]
+columns = 40
+lines = 13
+
+[window.position]
+x = 1150
+y = 400

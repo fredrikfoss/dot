@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/alacritty && mkdir ~/.config/alacritty
+
+ln -sf "$PWD/alacritty.toml" ~/.config/alacritty/alacritty.toml
+ln -sf "$PWD/pass-alacritty-config.toml" ~/.config/alacritty/pass-alacritty-config.toml

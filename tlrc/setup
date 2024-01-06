@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/tlrc && mkdir ~/.config/tlrc
+
+ln -sf "$PWD/config.toml" ~/.config/tlrc/config.toml

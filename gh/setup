@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/gh && mkdir ~/.config/gh
+
+ln -sf "$PWD/config.yml" ~/.config/gh/config.yml
+
+echo 'You might need to do `gh auth --with-token $(auth token github)`'

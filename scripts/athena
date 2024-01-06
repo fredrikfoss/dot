@@ -1,0 +1,47 @@
+#!/bin/sh
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+_file() { test -f "$1"; }
+
+# test $# -lt 1 && test -t 0 && {
+# 	echo "Usage: ${0##*/} <query>" >&2
+# 	exit 1
+# }
+
+# weight=~/.config/llamafile/llama-65b-Q5-K-M.gguf
+weight=~/Repos/huggingface.co/TheBloke/LLaMA-13b-GGUF/llama-13b.Q5_K_S.gguf
+
+! _have llamafile && echo "Requires mozilla-Ocho/llamafile" >&2 && exit 1
+! _file "$weight" && echo "Requires $weight" >&2 && exit 1
+
+exec llamafile \
+	-m $weight \
+	-p '
+The following is a conversation between a Researcher and their helpful AI assistant Digital Athena which is a large language model trained on the sum of human knowledge.
+Researcher: Good morning.
+Digital Athena: How can I help you today?
+Researcher:' \
+	--interactive \
+	--color \
+	--batch_size 1024 \
+	--ctx_size 4096 \
+	--keep -1 \
+	--temp 0 \
+	--mirostat 2 \
+	--in-prefix ' ' \
+	--interactive-first \
+	--in-suffix 'Digital Athena:' \
+	--reverse-prompt 'Researcher:' \
+	2>/dev/null
+
+# echo " The following is a conversation between a Researcher and their helpful AI assistant Digital Athena which is a large language model trained on the sum of human knowledge.
+# Researcher: Good morning.
+# Digital Athena: How can I help you today?
+# Researcher: $*" |
+# 	llamafile \
+# 		-m $weight \
+# 		-c 6700 \
+# 		-f /dev/stdin \
+# 		--temp 0 \
+# 		-n 500 \
+# 		--silent-prompt 2>/dev/null

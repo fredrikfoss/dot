@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+{ test -z "$(command -v vim)" || test -z "$(command -v vimtutor)"; } && {
+	echo "Warning: It doesn't look like you have the full version of vim installed."
+}
+
+! test -d ~/.vim && mkdir ~/.vim
+! test -d ~/.vim/autoload && mkdir ~/.vim/autoload
+! test -d ~/.vim/spell && mkdir ~/.vim/spell
+
+! test -d ~/.local && mkdir ~/.local
+! test -d ~/.local/state && mkdir ~/.local/state
+! test -d ~/.local/state/vim && mkdir ~/.local/state/vim
+! test -d ~/.local/state/vim/info && mkdir ~/.local/state/vim/info
+! test -d ~/.local/state/vim/undo && mkdir ~/.local/state/vim/undo
+! test -d ~/.local/state/vim/swap && mkdir ~/.local/state/vim/swap
+! test -d ~/.local/state/vim/backup && mkdir ~/.local/state/vim/backup
+
+! test -d ~/.local/share && mkdir ~/.local/share
+! test -d ~/.local/share/vim && mkdir ~/.local/share/vim
+! test -d ~/.local/share/vim/plug && mkdir ~/.local/share/vim/plug
+
+ln -sf "$PWD/.vimrc" ~/.vimrc
+ln -sf "$PWD/.vim/autoload/plug.vim" ~/.vim/autoload/plug.vim

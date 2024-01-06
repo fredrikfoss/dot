@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/karabiner && mkdir ~/.config/karabiner
+! test -d ~/.config/karabiner/assets && mkdir ~/.config/karabiner/assets
+! test -d ~/.config/karabiner/assets/complex_modifications && mkdir ~/.config/karabiner/assets/complex_modifications
+
+ln -sf "$PWD/assets/complex_modifications/custom-capslock.json" ~/.config/karabiner/assets/complex_modifications/custom-capslock.json
+ln -sf "$PWD/assets/complex_modifications/hhkb-custom-ctrl.json" ~/.config/karabiner/assets/complex_modifications/hhkb-custom-ctrl.json
+ln -sf "$PWD/assets/complex_modifications/lalt-hyper.json" ~/.config/karabiner/assets/complex_modifications/lalt-hyper.json

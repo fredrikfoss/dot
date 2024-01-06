@@ -1,0 +1,13 @@
+[generate]
+	strict = true
+	symbols = true
+[core]
+	#autopush = false
+	#autosync = false
+	cliptimeout = 15
+	nopager = true
+	notifications = false
+[recipients]
+	hash = 02e2a8eb5c631bffdb860b71fc1996ff1e9e362a9aaa292886e18cdb4be77c10
+[mounts]
+	path = ~/.local/share/gopass/stores/root

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# tldr-pages/tlrc wrapper
+
+_have() { type "$1" &>/dev/null; }
+
+if [[ $# -lt 1 ]]; then
+	echo "Usage: ${0##*/} [options] <page>" >&2
+	exit 1
+fi
+
+! _have tldr && echo "Requires tldr-pages/tlrc" >&2 && exit 1
+
+tldr --config "$HOME/.config/tlrc/config.toml" --platform 'linux' "$*"

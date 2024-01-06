@@ -1,0 +1,27 @@
+set editing-mode vi
+Control-l: clear-screen
+TAB: menu-complete
+"\e[Z": menu-complete-backward
+"\e[A": history-substring-search-backward
+"\e[B": history-substring-search-forward
+set keymap vi
+#"k": history-search-backward
+#"j": history-search-forward
+set enable-bracketed-paste on
+set keyseq-timeout 0.01
+#set colored-completion-prefix on
+#set colored-stats on
+set completion-query-items 100
+set mark-symlinked-directories on
+set match-hidden-files off
+set menu-complete-display-prefix on
+set page-completions off
+set show-all-if-ambiguous on
+set skip-completed-text on
+set bell-style none
+set echo-control-characters off
+set show-mode-in-prompt off
+#set vi-cmd-mode-string "\1\e[3 q\2"
+#set vi-ins-mode-string "\1\e[3 q\2"
+#set vi-cmd-mode-string "\1\e[1 q\2"
+#set vi-ins-mode-string "\1\e[2 q\2"

@@ -1,0 +1,82 @@
+[cache]
+#dir = "~/.cache/tlrc"
+auto_update = false
+max_age = 336
+languages = ["en"]
+
+[output]
+show_title = true
+platform_title = false
+show_hyphens = false
+example_prefix = ""
+compact = true
+raw_markdown = false
+
+[indent]
+title = 0
+description = 0
+bullet = 2
+example = 0
+
+[style.title]
+color = "red"
+background = "default"
+bold = true
+underline = false
+italic = false
+dim = false
+strikethrough = false
+
+[style.description]
+color = "white"
+background = "default"
+bold = false
+underline = false
+italic = false
+dim = false
+strikethrough = false
+
+[style.bullet]
+color = "white"
+background = "default"
+bold = false
+underline = false
+italic = false
+dim = true
+strikethrough = false
+
+[style.example]
+color = "default"
+background = "default"
+bold = false
+underline = false
+italic = false
+dim = false
+strikethrough = false
+
+[style.url]
+color = "white"
+background = "default"
+bold = false
+underline = false
+italic = false
+dim = false
+strikethrough = false
+
+[style.inline_code]
+color = "white"
+background = "default"
+bold = false
+underline = false
+italic = false
+dim = true
+strikethrough = false
+
+[style.placeholder]
+color = "default"
+background = "default"
+bold = false
+underline = false
+italic = false
+dim = false
+strikethrough = false

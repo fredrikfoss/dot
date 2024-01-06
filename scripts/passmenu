@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Script to manage secrets using gopass and fzf.
+# Dependencies: gopass, fzf, skhd, Alacritty, macOS
+
+set -eo pipefail
+
+export PASSWORD_STORE_CLIP_TIME='5'
+export FZF_DEFAULT_OPTS="--no-multi --no-mouse --reverse --no-unicode \
+--no-bold --no-hscroll --border=none --pointer=' ' --info=inline-right \
+--color=fg:#c7c7c7,bg:-1,hl:#ff6d67,fg+:#ffffff,bg+:#4ca730,hl+:#ffffff,gutter:-1,info:#f7cd94,prompt:#c7c7c7,spinner:-1,scrollbar:#878787"
+
+secret=$(gopass ls -f | fzf)
+
+operations=("Insert Auto" "password" $(gopass show "$secret" | perl -lane 'print $1 if /^\s*(\S+): \S+/'))
+selected_op=$(perl -le 'print ++$i.". ".$ARGV[$i-1] for 0..$#ARGV' "${operations[@]}" | fzf)
+selected_num=$(perl -ne 'print $1 if /^\s*(\d+)\./' <<<"$selected_op")
+
+[[ -n "$app_id" ]] && osascript -e "tell application \"$app_id\" to activate"
+
+op="${operations[$((selected_num - 1))]}"
+case $op in
+"Insert Auto") skhd -t "$(gopass -o "$secret" "login" 2>/dev/null)" && skhd -k "tab" && skhd -t "$(gopass -o "$secret" 2>/dev/null)" && gopass otp -c "$secret" &>/dev/null ;;
+"password") skhd -t "$(gopass -o "$secret")" ;;
+"totp" | "otp" | "hotp") skhd -t "$(gopass otp -o "$secret")" ;;
+*) skhd -t "$(gopass -o "$secret" "$op")" ;;
+esac

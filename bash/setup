@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+ln -sf "$PWD/.profile" ~/.profile
+ln -sf "$PWD/.profile" ~/.bash_profile
+ln -sf "$PWD/.bashrc" ~/.bashrc
+ln -sf "$PWD/.inputrc" ~/.inputrc
+ln -sf "$PWD/.dircolors" ~/.dircolors
+ln -sf "$PWD/.infokey" ~/.infokey

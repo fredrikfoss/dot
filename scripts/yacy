@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Executes a web search using lynx browser with URL-encoded query
+# parameters
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+
+test $# -lt 1 && test -t 0 && {
+	echo "Usage: ${0##*/} <url>" >&2
+	exit 1
+}
+
+! _have lynx && echo "Requires lynx" >&2 && exit 1
+! _have urlencode && echo "Requires urlencode" >&2 && exit 1
+
+url="http://127.0.0.1:8090/yacysearch.html?query=$(urlencode "$*")"
+exec lynx "$url"

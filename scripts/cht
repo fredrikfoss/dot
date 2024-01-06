@@ -1,0 +1,306 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1117,SC2001,SC1090,SC2002
+
+__CHTSH_VERSION=0.0.4
+__CHTSH_DATETIME="2021-04-25 12:30:30 +0200"
+
+CHTSH_HOME=$HOME/.config/cht.sh
+CHTSH_URL=https://cht.sh
+CHTSH_CONF=$CHTSH_HOME/config
+CHTSH_QUERY_OPTIONS="style=monokai"
+CHTSH_MODE=lite
+
+[ -e "$CHTSH_CONF" ] && source "$CHTSH_CONF"
+
+export LESSSECURE=1
+
+case "$(uname -s)" in
+Darwin) is_macos=yes ;;
+*) is_macos=no ;;
+esac
+
+fatal() {
+	echo "ERROR: $*" >&2
+	exit 1
+}
+
+_say_what_i_do() {
+	[ -n "$LOG" ] && echo "$(date '+[%Y-%m-%d %H:%M%S]') $*" >>"$LOG"
+
+	local this_prompt="\033[0;1;4;32m>>\033[0m"
+	printf "\n${this_prompt}%s\033[0m\n" " $* "
+}
+
+get_query_options() {
+	local query="$*"
+	if [ -n "$CHTSH_QUERY_OPTIONS" ]; then
+		case $query in
+		*\?*) query="$query&${CHTSH_QUERY_OPTIONS}" ;;
+		*) query="$query?${CHTSH_QUERY_OPTIONS}" ;;
+		esac
+	fi
+	printf "%s" "$query"
+}
+
+do_query() {
+	local query="$*"
+	local b_opts=
+	local uri="${CHTSH_URL}/\"\$(get_query_options $query)\""
+
+	if [ -e "$CHTSH_HOME/id" ]; then
+		b_opts="-b \"\$CHTSH_HOME/id\""
+	fi
+
+	eval curl "$b_opts" -s "$uri" >"$TMP1"
+
+	cat "$TMP1"
+}
+
+prepare_query() {
+	local section="$1"
+	shift
+	local input="$1"
+	shift
+	local arguments="$1"
+
+	local query
+	if [ -z "$section" ] || [ x"${input}" != x"${input#/}" ]; then
+		query=$(printf %s "$input" | sed 's@ @/@; s@ @+@g')
+	else
+		query=$(printf %s "$section/$input" | sed 's@ @+@g')
+	fi
+
+	[ -n "$arguments" ] && arguments="?$arguments"
+	printf %s "$query$arguments"
+}
+
+get_list_of_sections() {
+	curl -s "${CHTSH_URL}"/:list | grep -v '/.*/' | grep '/$' | xargs
+}
+
+if [ "$(uname -s)" = OpenBSD ] && [ -x /usr/bin/ftp ]; then
+	# any better test not involving either OS matching or actual query?
+	curl() {
+		local opt args="-o -"
+		while getopts "b:s" opt; do
+			case $opt in
+			b) args="$args -c $OPTARG" ;;
+			s) args="$args -M -V" ;;
+			*)
+				echo "internal error: unsupported cURL option '$opt'" >&2
+				exit 1
+				;;
+			esac
+		done
+		shift $((OPTIND - 1))
+		/usr/bin/ftp "$args" "$@"
+	}
+else
+	command -v curl >/dev/null || {
+		echo 'DEPENDENCY: install "curl" to use cht.sh' >&2
+		exit 1
+	}
+	_CURL=$(command -v curl)
+	if [ x"$CHTSH_CURL_OPTIONS" != x ]; then
+		curl() {
+			$_CURL "${CHTSH_CURL_OPTIONS}" "$@"
+		}
+	fi
+fi
+
+if [ "$1" = --read ]; then
+	read -r a || a="exit"
+	printf "%s\n" "$a"
+	exit 0
+# elif [ "$1" = --shell ]; then
+# 	shell_mode=yes
+# 	shift
+fi
+
+prompt="cht.sh"
+opts=""
+input=""
+for o; do
+	if [ x"$o" != x"${o#-}" ]; then
+		opts="${opts}${o#-}"
+	else
+		input="$input $o"
+	fi
+done
+query=$(echo "$input" | sed 's@ *$@@; s@^ *@@; s@ @/@; s@ @+@g')
+
+if [ "$shell_mode" != yes ]; then
+	curl -s "${CHTSH_URL}"/"$(get_query_options "$query")"
+	exit 0
+else
+	new_section="$1"
+	valid_sections=$(get_list_of_sections)
+	valid=no
+	for q in $valid_sections; do [ "$q" = "$new_section/" ] && {
+		valid=yes
+		break
+	}; done
+
+	if [ "$valid" = yes ]; then
+		section="$new_section"
+		# shellcheck disable=SC2001
+		this_query="$(echo "$input" | sed 's@ *[^ ]* *@@')"
+		this_prompt="\033[0;32mcht.sh/$section>\033[0m "
+	else
+		this_query="$input"
+		this_prompt="\033[0;32mcht.sh>\033[0m "
+	fi
+	if [ -n "$this_query" ] && [ -z "$CHEATSH_RESTART" ]; then
+		printf "$this_prompt$this_query\n"
+		curl -s "${CHTSH_URL}"/"$(get_query_options "$query")"
+	fi
+fi
+
+if [ "$is_macos" != yes ]; then
+	if [ "$XDG_SESSION_TYPE" = wayland ]; then
+		command -v wl-copy >/dev/null || echo 'DEPENDENCY: please install "wl-copy" for "copy"' >&2
+	else
+		command -v xsel >/dev/null || echo 'DEPENDENCY: please install "xsel" for "copy"' >&2
+	fi
+fi
+command -v rlwrap >/dev/null || {
+	echo 'DEPENDENCY: install "rlwrap" to use cht.sh in the shell mode' >&2
+	exit 1
+}
+
+mkdir -p "$CHTSH_HOME/"
+lines=$(tput lines)
+
+# if command -v less >/dev/null; then
+# 	defpager="less -R"
+# elif command -v more >/dev/null; then
+# 	defpager="more"
+# else
+# 	defpager="cat"
+# fi
+defpager="cat"
+
+cmd_cd() {
+	if [ $# -eq 0 ]; then
+		section=""
+	else
+		new_section=$(echo "$input" | sed 's/cd  *//; s@/*$@@; s@^/*@@')
+		if [ -z "$new_section" ] || [ ".." = "$new_section" ]; then
+			section=""
+		else
+			valid_sections=$(get_list_of_sections)
+			valid=no
+			for q in $valid_sections; do [ "$q" = "$new_section/" ] && {
+				valid=yes
+				break
+			}; done
+			if [ "$valid" = no ]; then
+				echo "Invalid section: $new_section"
+				echo "Valid sections:"
+				echo "$valid_sections" |
+					xargs printf "%-10s\n" |
+					tr ' ' . |
+					xargs -n 10 |
+					sed 's/\./ /g; s/^/  /'
+			else
+				section="$new_section"
+			fi
+		fi
+	fi
+}
+
+cmd_copy() {
+	if [ -z "$DISPLAY" ]; then
+		echo copy: supported only in the Desktop version
+	elif [ -z "$input" ]; then
+		echo copy: Make at least one query first.
+	else
+		curl -s "${CHTSH_URL}"/"$(get_query_options "$query"?T)" >"$TMP1"
+		if [ "$is_macos" != yes ]; then
+			if [ "$XDG_SESSION_TYPE" = wayland ]; then
+				wl-copy <"$TMP1"
+			else
+				xsel -bi <"$TMP1"
+			fi
+		else
+			pbcopy <"$TMP1"
+		fi
+		echo "copy: $(wc -l "$TMP1" | awk '{print $1}') lines copied to the selection"
+	fi
+}
+
+cmd_ccopy() {
+	if [ -z "$DISPLAY" ]; then
+		echo copy: supported only in the Desktop version
+	elif [ -z "$input" ]; then
+		echo copy: Make at least one query first.
+	else
+		curl -s "${CHTSH_URL}"/"$(get_query_options "$query"?TQ)" >"$TMP1"
+		if [ "$is_macos" != yes ]; then
+			if [ "$XDG_SESSION_TYPE" = wayland ]; then
+				wl-copy <"$TMP1"
+			else
+				xsel -bi <"$TMP1"
+			fi
+		else
+			pbcopy <"$TMP1"
+		fi
+		echo "copy: $(wc -l "$TMP1" | awk '{print $1}') lines copied to the selection"
+	fi
+}
+
+cmd_exit() {
+	exit 0
+}
+
+cmd_help() {
+	cat <<EOF
+help    - show this help
+cd LANG - change the language context
+copy    - copy the last answer in the clipboard (aliases: yank, y, c)
+ccopy   - copy the last answer w/o comments (cut comments; aliases: cc, Y, C)
+exit    - exit the cheat shell (aliases: quit, ^D)
+/:help  - service help
+QUERY   - space separated query staring (examples are below)
+              cht.sh> python zip list
+              cht.sh/python> zip list
+              cht.sh/go> /python zip list
+EOF
+}
+
+cmd_query() {
+	query=$(prepare_query "$section" "$input")
+	do_query "$query"
+}
+
+TMP1=$(mktemp /tmp/cht.sh.XXXXXXXXXXXXX)
+trap 'rm -f $TMP1' EXIT
+trap 'true' INT
+
+while true; do
+	if [ "$section" != "" ]; then
+		full_prompt="$prompt/$section> "
+	else
+		full_prompt="$prompt> "
+	fi
+
+	input=$(
+		rlwrap -H "$HOME/.local/state/cht.sh/history" -pgreen -C cht.sh -S "$full_prompt" bash "$0" --read | sed 's/ *#.*//'
+	)
+
+	cmd_name=${input%% *}
+	cmd_args=${input#* }
+	case $cmd_name in
+	"") continue ;; # skip empty input lines
+	'?' | h | help) cmd_name=help ;;
+	cd) cmd_name="cd" ;;
+	exit | quit) cmd_name="exit" ;;
+	copy | yank | c | y) cmd_name=copy ;;
+	ccopy | cc | C | Y) cmd_name=ccopy ;;
+	*)
+		cmd_name="query"
+		cmd_args="$input"
+		;;
+	esac
+	"cmd_$cmd_name" "$cmd_args"
+done

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Generate a citation entry from a given URL by fetching the content of
+# the webpage with curl, formatting it with lynx and processing it with
+# jq, before passing it to gpt
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+
+test $# -lt 1 && test -t 0 && {
+	echo "Usage: ${0##*/} <url>" >&2
+	exit 1
+}
+
+! _have gpt && echo "Requires gpt" >&2 && exit 1
+! _have lynx && echo "Requires lynx" >&2 && exit 1
+! _have jq && echo "Requires jqlang/jq" >&2 && exit 1
+
+content=$(curl "$1" -s | lynx -stdin -display_charset=utf-8 -dump -nomargins -nonumbers -nolist | jq -sR .)
+exec echo "$content" | gpt "url: $1" '
+Lag en kildeoppføring av den oppgitte teksten. Bruk dette oppsettet:
+
+Forfatter. (år, dato). Tittel. Hentet fra URL.
+
+Eks:
+Olsen, Nils (1999, 3. mai). Hvem var Martin Luther King jr.? Hentet fra http://www.hioa.no/prosjekt/martinlutherking.htm
+
+Hvis noe av informasjonen ikke er tilgjenelig, hopp over det. Returner bare kildeoppføringen, ingenting annet.
+'

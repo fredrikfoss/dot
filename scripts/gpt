@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Retrieves and exports the OpenAI API key from the password store with
+# gopass and invokes a GPT-4 query with specified parameters using mods
+#
+# In ~/.config/mods/mods.yml put
+#
+# ```
+# apis:
+#   openai:
+#     base-url: https://api.openai.com/v1
+#     api-key-env: OPENAI_API_KEY
+# ```
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+
+test $# -lt 1 && test -t 0 && {
+	echo "Usage: ${0##*/} <query>" >&2
+	exit 1
+}
+
+! _have mods && echo "Requires charmbracelet/mods" >&2 && exit 1
+! _have gopass && echo "Requires gopasspw/gopass" >&2 && exit 1
+
+test -z "$OPENAI_API_KEY" && {
+	value=$(gopass show -o "$(gopass ls --flat | grep -m1 "^openai.com/openai")" "api" 2>/dev/null) || {
+		echo "Failed to retrieve key from password store" >&2
+		exit 1
+	}
+	export OPENAI_API_KEY="$value"
+}
+
+mods --api openai \
+	--model gpt-4-1106-preview \
+	--max-retries 5 \
+	--max-tokens 4096 \
+	--temp 0.0 \
+	--no-cache \
+	--quiet \
+	--raw "$*"
+echo

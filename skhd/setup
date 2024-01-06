@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/skhd && mkdir ~/.config/skhd
+
+ln -sf "$PWD/skhdrc" ~/.config/skhd/skhdrc
+
+skhd --start-service && skhd -r

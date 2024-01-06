@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Uses lynx to fetch and format text from a provided URL, and pipes it
+# to gpt for concise summarization
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+
+test "$#" -ne 1 && {
+	echo "Usage: ${0##*/} <url>" >&2
+	exit 1
+}
+
+! _have gpt && echo "Requires gpt" >&2 && exit 1
+! _have lynx && echo "Requires lynx" >&2 && exit 1
+! _have jq && echo "Requires jqlang/jq" >&2 && exit 1
+
+(
+	echo '[INST]Concisely summarize the following text:'
+	lynx -display_charset=utf-8 \
+		-force_html \
+		-width=1024 \
+		-nomargins \
+		-dump "$1" |
+		sed 's/   */ /'
+	echo '[/INST]'
+) | gpt
+
+# text=$(lynx -display_charset=utf-8 -force_html -width=1024 -nomargins -dump "$1" | sed 's/   */ /')
+#
+# gpt <<EOF
+# Provide a very concise summary of the provided text. If fitting, give a few very precise key takeaways or tips that might be of value or provide useful to the user. Try to format it something like this:
+#
+# Summary:
+# A short and concise summary of the provided text. No more than a few lines, and if a short summary really doesnt cut it, a link to further reading can be added a line below.
+#
+# * A few precise takeaways, tips or trick the user might find valuable,
+# * useful or interesting. Information that can be put to practice
+# * quickly, named software and the like should be prioriticed
+#
+#
+# The provided text to summarize:
+#
+# "$text"
+# EOF

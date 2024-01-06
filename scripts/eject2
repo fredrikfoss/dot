@@ -1,0 +1,28 @@
+#!/bin/sh
+
+test $# -lt 1 && {
+	echo "Usage: ${0##*/} <disk>" >&2
+	exit 1
+}
+
+base_path=/media/$USER
+test -d "/media/$USER" && {
+	! umount "$base_path/$1" >/dev/null 2>&1 && {
+		echo "Could not eject $1"
+		exit 1
+	}
+	echo "$1 ejected successfully."
+	exit 0
+}
+
+base_path=/Volumes
+test -d "$base_path" && {
+	! diskutil eject "$base_path/$1" >/dev/null 2>&1 && {
+		echo "Could not eject $1"
+		exit 1
+	}
+	echo "$1 ejected successfully."
+	exit 0
+}
+
+# TOOD: add tab completion

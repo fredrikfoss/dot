@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/Scripts && {
+	ln -sf "$PWD/scripts" ~/Scripts
+}
+
+for dir in bash vim tmux lynx git gh; do
+	cd $dir && ./setup
+	cd -
+done
+
+exec bash -l

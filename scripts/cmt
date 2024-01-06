@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Comment out lines
+
+while IFS= read -r line; do
+	echo "${1:-#} $line"
+done

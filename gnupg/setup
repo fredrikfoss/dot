@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.gnupg && mkdir ~/.gnupg
+
+ln -sf "$PWD/gpg.conf" ~/.gnupg/gpg.conf
+
+test "$PLATFORM" == "mac" && {
+	grep "pinentry-program /opt/homebrew/bin/pinentry-mac" ~/.gnupg/gpg-agent ||
+		echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >>~/.gnupg/gpg-agent.conf
+}

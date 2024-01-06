@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Be sure to install the ca-certificates package
+# See ../lynx/README.md for configs
+
+lynxpath=/usr/bin/lynx
+! test -x $lynxpath && lynxpath=/usr/local/bin/lynx
+! test -x $lynxpath && lynxpath=/opt/homebrew/bin/lynx
+! test -x $lynxpath && echo "Requires lynx" >&2 && exit 1
+
+test -f "$HOME/.config/lynx/lynx.cfg" && export LYNX_CFG="$HOME/.config/lynx/lynx.cfg"
+test -f "$HOME/.config/lynx/lynx.lss" && export LYNX_LSS="$HOME/.config/lynx/lynx.lss"
+
+#useragent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/116.0 Lynx"
+useragent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.79 Safari/537.1 Lynx"
+
+exec "$lynxpath" --useragent="$useragent" "$@"

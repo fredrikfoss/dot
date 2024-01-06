@@ -1,0 +1,75 @@
+env:
+  TERM: alacritty
+  COLORTERM: truecolor
+  LANG: en_US.UTF-8
+
+window:
+  dynamic_padding: true
+  #decorations: none
+  #decorations: transparent
+  #decorations: buttonless
+  decorations: full
+  decorations_theme_variant: Light
+  dimensions:
+    columns: 40
+    lines: 13
+  position:
+    x: 1150
+    y: 400
+
+font:
+  normal:
+    family: Writer
+    #style: Regular
+  size: 14
+  offset:
+    y: 5
+    x: 0
+  glyph_offset:
+    x: 0
+    y: 3
+
+scrolling:
+  history: 1000
+  auto_scroll: true
+
+live_config_reload: false
+draw_bold_text_with_bright_colors: true
+
+cursor:
+  style:
+    shape: Underline
+    blinking: On
+  blink_interval: 250
+  blink_timeout: 0
+  thickness: 0.4
+  unfocused_hollow: false
+
+colors:
+  primary:
+    background: '#000000'
+    foreground: '#c7c7c7'
+  normal:
+    black:      '#000000'
+    red:        '#c91b00'
+    green:      '#00c200'
+    yellow:     '#c7c400'
+    blue:       '#0225c7'
+    magenta:    '#c930c7'
+    cyan:       '#00c5c7'
+    white:      '#c7c7c7'
+    #white:      '#e5e5e5'
+  bright:
+    black:      '#676767'
+    red:        '#ff6d67'
+    green:      '#5ff967'
+    #yellow:     '#fefb67'
+    yellow:     '#f7cd94'
+    blue:       '#6871ff'
+    magenta:    '#ff76ff'
+    cyan:       '#5ffdff'
+    white:      '#fffeff'
+  cursor:
+    background: '#c7c7c7'
+    #background: '#fffeff'
+    foreground: '0x000000'

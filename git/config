@@ -1,0 +1,30 @@
+[user]
+name = Fredrik Foss-Indrehus
+email = fredrikfoss@fr.urbanpets.no
+signingkey = 3A0536C19C0E1CF4
+
+[core]
+excludesfile = ~/.config/git/ignore
+editor = vi
+
+[init]
+defaultBranch = main
+[github]
+user = fredrikfoss
+[fetch]
+prune = true
+
+[alias]
+s = status -sb
+b = branch -av
+g = log --graph --oneline --all --format='%C(yellow)%h%Creset %C(white)%s%Creset %C(cyan)(%cr) %C(green)<%an>%Creset%C(dim white)%d%Creset'
+l = log --graph --all --format='%C(yellow)%h%C(dim white)%d%C(reset) %C(cyan)%ar%C(reset) %C(green)%an%C(reset)%n\t%C(white)%s%C(reset)'
+
+[commit]
+gpgsign = true
+
+[filter "lfs"]
+process = git-lfs filter-process
+required = true
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f

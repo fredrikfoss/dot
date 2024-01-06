@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+_have() { type "$1" &>/dev/null; }
+
+[[ -z "$1" ]] && {
+	echo "Usage: ${0##*/} <url>" >&2
+	exit 1
+}
+
+! _have gpt && echo "Requires gpt" >&2 && exit 1
+! _have yt-dlp && echo "Requires yt-dlp" >&2 && exit 1
+
+tmpdir=$(mktemp -d)
+trap 'rm -rf "$tmpdir"' EXIT
+
+yt-dlp \
+	--quiet \
+	--skip-download \
+	--ignore-errors \
+	--restrict-filenames \
+	--sponsorblock-remove all \
+	--write-subs \
+	--write-auto-sub \
+	--sub-langs "en.*" \
+	--output "${tmpdir}/sub.%(ext)s" \
+	"$1"
+
+shopt -s nullglob
+for file in "$tmpdir"/*; do
+	sed -i -e 's/<[^>]*>//g' \
+		-e '/^\s*$/d' \
+		-e '/^.*-->.*$/d' \
+		-e '/^.*[0-9]:[0-9][0-9]:[0-9][0-9].*$/d' "$file"
+	awk '!seen[$0]++' "$file" >"${file}.tmp" && mv "${file}.tmp" "$file"
+done
+
+gpt < <(cat "$tmpdir"/*) '
+Provide a very concise summary of the provided audio voice transcribe/transcribes. If fitting, give a few very precise key takeaways or tips that might be of value or provide useful to the user. Try to format it something like this:
+
+Summary:
+A short and concise summary of the provided text. No more than a few lines, and if a short summary really doesnt cut it, a link to further reading can be added a line below.
+
+* A few precise takeaways, tips or trick the user might find valuable,
+* useful or interesting. Information that can be put to practice
+* quickly, named software and the like should be prioriticed
+'

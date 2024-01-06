@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+#STYLE=monokai
+#curl -s cht.sh/go/execute+external+program\?style=${STYLE}
+
+get_query_options() {
+	local query="$*"
+	if [ -n "$CHTSH_QUERY_OPTIONS" ]; then
+		case $query in
+		*\?*) query="$query&${CHTSH_QUERY_OPTIONS}" ;;
+		*) query="$query?${CHTSH_QUERY_OPTIONS}" ;;
+		esac
+	fi
+	printf "%s" "$query"
+}
+
+do_query() {
+	local query="$*"
+	local b_opts=
+	local uri="${CHTSH_URL}/\"\$(get_query_options $query)\""
+
+	if [ -e "$CHTSH_HOME/id" ]; then
+		b_opts="-b \"\$CHTSH_HOME/id\""
+	fi
+
+	eval curl "$b_opts" -s "$uri" >"$TMP1"
+
+	cat "$TMP1"
+}
+
+prepare_query() {
+	local section="$1"
+	shift
+	local input="$1"
+	shift
+	local arguments="$1"
+
+	local query
+	if [ -z "$section" ] || [ x"${input}" != x"${input#/}" ]; then
+		query=$(printf %s "$input" | sed 's@ @/@; s@ @+@g')
+	else
+		query=$(printf %s "$section/$input" | sed 's@ @+@g')
+	fi
+
+	[ -n "$arguments" ] && arguments="?$arguments"
+	printf %s "$query$arguments"
+}
+
+_CURL=$(command -v curl)
+if [ x"$CHTSH_CURL_OPTIONS" != x ]; then
+	curl() {
+		$_CURL "${CHTSH_CURL_OPTIONS}" "$@"
+	}
+fi
+
+query=$(echo "$input" | sed 's@ *$@@; s@^ *@@; s@ @/@; s@ @+@g')
+
+curl -s "${CHTSH_URL}"/"$(get_query_options "$query")"
+
+cmd_query() {
+	query=$(prepare_query "$section" "$input")
+	do_query "$query"
+}
+
+TMP1=$(mktemp /tmp/cht.sh.XXXXXXXXXXXXX)
+trap 'rm -f $TMP1' EXIT
+trap 'true' INT
+
+while true; do
+	# 	input=$(
+	# 		rlwrap -H "$HOME/.local/state/cht.sh/history" -pgreen -C cht.sh -S "$full_prompt" bash "$0" --read | sed 's/ *#.*//'
+	# 	)
+
+	input=$(bash "$0" --read | sed 's/ *#.*//')
+
+	cmd_name=${input%% *}
+	cmd_args=${input#* }
+	cmd_name="query"
+	cmd_args="$input"
+	"cmd_$cmd_name" "$cmd_args"
+done

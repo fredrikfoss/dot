@@ -1,0 +1,201 @@
+env:
+  # TERM: alacritty
+  # TERM: xterm-256color
+  # COLORTERM: truecolor
+  LANG: en_US.UTF-8
+# shell:
+#   program: bash
+window:
+  dynamic_title: true
+  dynamic_padding: true
+  # padding:
+  #   x: 0
+  #   y: 0
+  opacity: 1.0
+  decorations: none
+  # decorations: transparent
+  # decorations: buttonless
+  # decorations: full
+  dimensions:
+    columns: 107
+    lines: 29
+    # columns: 132
+    # lines: 24
+# tabspaces: 2
+# draw_bold_text_with_bright_colors: false
+font:
+  normal:
+    family: Jetbrains Mono NL
+    # family: IBM Plex Mono
+    # family: Monoid
+    # family: Space Mono
+    # family: Ubuntu Mono
+    # family: Terminus (TTF)
+    # family: Unifont
+    # family: Courier New
+    # family: Courier Prime Code
+    # family: Writer
+    # family: Menlo
+    # family: FiraMono Nerd Font
+    # family: RobotoMono Nerd Font
+    # family: SauceCodePro Nerd Font
+    # family: InconsolataGo Nerd Font
+    style: Regular
+    # style: Medium
+  #   bold:
+  #     family: Jetbrains Mono NL
+  #     style: Regular
+  #   italic:
+  #     family: Jetbrains Mono NL
+  #     style: Regular
+  #   bold_italic:
+  #     family: Jetbrains Mono NL
+  #     style: Regular
+  size: 12.5
+  offset:
+    y: 0
+    x: 0
+  glyph_offset:
+    x: 0
+    y: 0
+# cursor:
+#   style:
+#     shape: Underline
+#     blinking: On
+#   blink_interval: 250
+#   blink_timeout: 0
+#   #vi_mode_style:
+#   #  shape: Underline
+#   #  blinking: Off
+#   thickness: 0.4
+#   unfocused_hollow: false
+
+# cursor:
+#   style:
+#     shape: Block
+#     blinking: On
+#   blink_interval: 500
+#   blink_timeout: 10
+#   unfocused_hollow: true
+scrolling:
+  history: 100000
+  auto_scroll: true
+live_config_reload: true
+# draw_bold_text_with_bright_colors: false
+draw_bold_text_with_bright_colors: true
+schemes:
+  default: &default
+    primary:
+      # background: '#000000' # black
+      # background: '#131313' # dark gray
+      # background: "#161616" # midligt gray
+      # background: '#0D0B01' # prime
+      background: "#262626"  # light gray
+      foreground: "#c7c7c7"
+    normal:
+      black: "#000000"
+      red: "#c91b00"
+      green: "#00c200"
+      yellow: "#a2734c"
+      blue: "#0000ee"
+      magenta: "#c930c7"
+      cyan: "#00c5c7"
+      # white:      '#xc7c7c7'
+      white: "#999999"
+    bright:
+      black: "#676767"
+      red: "#ff6d67"
+      green: "#5ff967"
+      yellow: "#e9ad0c"
+      # yellow:     '#F8D648'
+      # yellow:     "#f7cd94"
+      blue: "#5555ff"
+      magenta: "#ff76ff"
+      cyan: "#5ffdff"
+      white: "#fffeff"
+    cursor:
+      # background: "#ffffff"
+      # foreground: "#000000"
+      background: "#c7c7c7"
+      foreground: "#262626"
+  hacker: &hacker
+    primary:
+      background: "#000000"
+      foreground: "#c7c7c7"
+    normal:
+      black: "#000000"
+      red: "#c91b00"
+      green: "#00c200"
+      yellow: "#c7c400"
+      blue: "#0225c7"
+      magenta: "#c930c7"
+      cyan: "#00c5c7"
+      white: "#c7c7c7"
+      # white:      '#e5e5e5'
+    bright:
+      black: "#676767"
+      red: "#ff6d67"
+      green: "#5ff967"
+      # yellow:     '#fefb67'
+      yellow: "#f7cd94"
+      blue: "#6871ff"
+      magenta: "#ff76ff"
+      cyan: "#5ffdff"
+      white: "#fffeff"
+    cursor:
+      background: "#c7c7c7"
+      # background: '#fffeff'
+      foreground: "0x000000"
+  dunno: &hacker2
+    primary:
+      background: "#000000"
+      foreground: "#aaaaaa"
+    normal:
+      black: "#000000"
+      red: "#aa0000"
+      green: "#00aa00"
+      yellow: "#aa5500"
+      blue: "#0000aa"
+      magenta: "#aa00aa"
+      cyan: "#00aaaa"
+      white: "#aaaaaa"
+    bright:
+      black: "#555555"
+      red: "#ff5555"
+      green: "#55ff55"
+      # yellow: "#ffff55"
+      yellow: "#f7cd94"
+      blue: "#5555ff"
+      # magenta: "#ff55ff"
+      # magenta: "#A989D2"
+      cyan: "#55ffff"
+      white: "#ffffff"
+    cursor:
+      background: "#b8b8b8"
+      foreground: "#000000"
+  xterm: &xterm
+    primary:
+      background: "#000000"
+      foreground: "#ffffff"
+    normal:
+      black: "#000000"
+      red: "#cd0000"
+      green: "#00cd00"
+      yellow: "#cdcd00"
+      blue: "#0000ee"
+      magenta: "#cd00cd"
+      cyan: "#00cdcd"
+      white: "#e5e5e5"
+    bright:
+      black: "#7f7f7f"
+      red: "#ff0000"
+      green: "#00ff00"
+      yellow: "#ffff00"
+      blue: "#5c5cff"
+      magenta: "#ff00ff"
+      cyan: "#00ffff"
+      white: "#ffffff"
+    cursor:
+      background: "#ffffff"
+      foreground: "#000000"
+colors: *default

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/yabai && mkdir ~/.config/yabai
+
+ln -sf "$PWD/yabairc" ~/.config/yabai/yabairc
+
+confrow="$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 "$(which yabai)" | cut -d " " -f 1) $(which yabai) --load-sa"
+echo "$confrow" | sudo tee /private/etc/sudoers.d/yabai >/dev/null
+
+echo "Make sure to disable SIP for yabai to fully work"
+echo 'Now run `yabai --start-service` or `yabai --restart-service`'

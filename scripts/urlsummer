@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Uses lynx to fetch and format text from a provided URL, and pipes it
+# to llamafile for concise summarization
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+_file() { test -f "$1"; }
+
+test "$#" -ne 1 && {
+	echo "Usage: ${0##*/} <url>" >&2
+	exit 1
+}
+
+weight=~/Repos/huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/mistral-7b-instruct-v0.1.Q4_K_M.gguf
+
+! _have llamafile && echo "Requires mozilla-Ocho/llamafile" >&2 && exit 1
+! _file "$weight" && echo "Requires $weight" >&2 && exit 1
+
+(
+	echo '[INST]Concisely summarize the following text:'
+	lynx \
+		-display_charset=utf-8 \
+		-force_html \
+		-width=1024 \
+		-nomargins \
+		-dump "$1" |
+		sed 's/   */ /'
+	echo '[/INST]'
+) | llamafile \
+	-m $weight \
+	-c 6700 \
+	-f /dev/stdin \
+	--temp 0 \
+	-n 500 \
+	--silent-prompt 2>/dev/null

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Start Browsersync session in silent mode to serve/watch the specified
+# file or directory with auto-reload on changes, excluding hidden files
+# and focusing on HTML files
+
+test $# -lt 1 && {
+	echo "Usage: ${0##*/} <dir|file>" >&2
+	exit 1
+}
+
+! command -v browser-sync >/dev/null 2>&1 && {
+	echo "Requires Browsersync/browser-sync" >&2
+	exit 1
+}
+
+exec browser-sync start \
+	--no-notify --no-ui --no-open \
+	--ignore '**/.*' \
+	--extensions="html" \
+	-sw

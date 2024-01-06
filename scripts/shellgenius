@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+_have() { type "$1" &>/dev/null; }
+
+export_key() {
+	local env=$1 secret=$2 key=$3 value
+	if [[ -z "${!env}" ]]; then
+		value=$(gopass show -o "$(gopass ls --flat | grep -m1 "^$secret")" "$key" 2>/dev/null) || {
+			echo "Error: Failed to retrieve key from password store" >&2
+			return 1
+		}
+		export "$env=$value"
+	fi
+}
+
+if [[ -z "$1" && -t 0 ]]; then
+	echo "Usage: ${0##*/} <query>" >&2
+	exit 1
+fi
+
+! _have mods && echo "Requires charmbracelet/mods" >&2 && exit 1
+! _have glow && echo "Requires charmbracelet/glow" >&2 && exit 1
+! _have gopass && echo "Requires gopasspw/gopass" >&2 && exit 1
+
+export_key "OPENAI_API_KEY" "openai.com/openai" "api" || exit 1
+query=$(
+	cat <<'EOF'
+You are an expert AI in using bash and the shell terminal. As an
+helpful AI, you recognize the language of the user and respond in the
+same language.
+
+For the given task in a ${os_name} shell, I need you to provide the corresponding command along with a step-by-step explanation. Follow these guidelines for your response:
+
+1. Begin your response with the exact shell command.
+2. Follow the command with a step-by-step explanation in bullet point format.
+
+Please note:
+
+* Your response should always start with the shell command. No exceptions.
+
+Here is the required format:
+
+```bash
+command
+```
+
+### Explanation:
+
+* Step 1: ...
+* Step 2: ...
+* Step 3: ...
+
+---
+EOF
+)
+
+echo "$query" | mods --model "gpt-4-1106-preview" --no-cache --quiet "$*"

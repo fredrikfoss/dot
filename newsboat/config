@@ -1,0 +1,63 @@
+browser lynx
+
+# Key-bindings
+bind-key j down
+bind-key k up
+bind-key J next
+bind-key K prev
+bind-key l open
+bind-key h quit
+bind-key q hard-quit
+bind-key , open-in-browser-and-mark-read
+
+# Dark colorscheme
+color background          default    default
+color listnormal          color7   default
+color listnormal_unread   color2     default
+color listfocus           color7     color8 bold dim
+color listfocus_unread    green     color8 bold dim
+color title               magenta    default
+color info                color6    default
+color article             default   default
+color end-of-text-marker color0 default
+#highlight article "https?://[^ ]+" default default underline
+highlight article "^(Feed|Link):.*$" color7 default
+highlight article "^(Title|Date|Author):.*$" color7 default
+highlight article "^(Title):.*$" yellow blue bold
+#highlight article "\\[[0-9]+\\]" color2 default
+#highlight article "\\[image\\ [0-9]+\\]" color2 default
+#highlight feedlist "^─.*$" color6 color0 bold
+
+# Light colorscheme
+#color background        black white
+#color listnormal        black white
+#color listnormal_unread black white
+#color listfocus         white blue bold
+#color listfocus_unread  white blue bold
+#color info              white red bold
+#color article           black white
+#highlight article "^(Feed|Link):.*$" color8 white bold
+#highlight article "^(Title|Date|Author):.*$" color15 white bold
+#highlight article "https?://[^ ]+" blue white
+#highlight article "\\[[0-9]+\\]" blue white
+#highlight article "\\[image\\ [0-9]+\\]" blue white
+#highlight feedlist "^─.*$" blue white
+
+
+# another colorscheme
+##color listnormal        white black
+#color listnormal        white black
+#color listnormal_unread default black
+#color listfocus         color11 red
+#color listfocus_unread  yellow red bold
+#color info              color11 blue
+#color background        white black
+#color article           white black
+#highlight article "^(Feed|Link):.*$" cyan black dim
+#highlight article "^(Title|Date|Author):.*$" cyan black dim
+#highlight article "^(Feed):.*$" white black
+#highlight article "^(Title):.*$" white black bold
+##highlight article "https?://[^ ]+" blue black
+##highlight article "\\[[0-9]+\\]" color12 black
+##highlight article "\\[image\\ [0-9]+\\]" blue black
+#highlight feedlist "^─.*$" cyan black dim

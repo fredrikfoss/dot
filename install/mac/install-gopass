@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# ---- NOT WORKING! ----
+
+#url="https://github.com/rwxrob/keg/releases/latest/download/keg-darwin-arm64"
+url="https://github.com/gopasspw/gopass/releases/latest/download/gopass-darwin-arm64"
+exe=gopass
+
+dir=$(mktemp -d)
+
+cleanup() {
+	rm -rf "$dir"
+}
+trap cleanup EXIT
+
+curl -L "$url" -o "$dir/$exe"
+chmod +x "$dir/$exe"
+
+# mkdir -p is not POSIX compliant
+[ ! -d ~/.local ] && mkdir ~/.local
+[ ! -d ~/.local/bin ] && mkdir ~/.local/bin
+
+cp "$dir/$exe" ~/.local/bin

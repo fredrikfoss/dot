@@ -1,0 +1,9 @@
+#!/bin/sh
+
+exec brew install coreutils binutils diffutils ed findutils gawk gnu-indent gnu-sed gnu-tar gnu-which gnutls grep gzip screen tmux watch wdiff curl wget bash gdb gpatch m4 make file-formula git git-lfs less openssh python rsync unzip vim gpg pinentry-mac jq bash lynx golang kubectl gh pandoc nmap gopass yt-dlp ffmpeg
+
+echo "Don't forget:"
+echo "  - Add /opt/homebrew/bin/bash or /usr/local/bin/bash to /etc/shells"
+echo "  - Run chsh -s /opt/homebrew/opt/bash or chsh -s /usr/local/bin/bash"
+echo "  - Use #!/usr/bin/env bash as shebang line"
+echo "  - Point sh to /bin/dash (see ./setup)"

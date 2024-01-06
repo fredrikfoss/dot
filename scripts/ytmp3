@@ -1,0 +1,26 @@
+#!/bin/sh
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+
+test $# -lt 1 && {
+	echo "Usage: ${0##*/} <url>" >&2
+	exit 1
+}
+
+! _have yt-dlp && echo "Requires yt-dlp" >&2 && exit 1
+! _have ffmpeg && echo "Requires ffmpeg" >&2 && exit 1
+! _have ffprobe && echo "Requires ffprobe" >&2 && exit 1
+
+exec yt-dlp \
+	--sponsorblock-remove all \
+	--restrict-filenames \
+	--parse-metadata "%(title)s:%(meta_title)s" \
+	--parse-metadata "%(uploader|)s:%(meta_artist)s" \
+	--embed-thumbnail \
+	--embed-metadata \
+	--ignore-errors \
+	--output "%(title)s.%(ext)s" \
+	--extract-audio \
+	--audio-format mp3 \
+	--audio-quality 0 \
+	"$@"

@@ -1,0 +1,204 @@
+# https://alacritty.org/config-alacritty.html
+
+live_config_reload = true
+shell = "/opt/homebrew/bin/bash"
+
+[env]
+LANG = "en_US.UTF-8"
+
+[window]
+decorations = "none"
+# decorations = "full"
+dynamic_padding = true
+dimensions = { columns = 107, lines = 29 }
+dynamic_title = true
+opacity = 1.0
+# decorations_theme_variant = "Light"
+
+# [window.dimensions]
+# columns = 107
+# lines = 29
+
+[scrolling]
+history = 100000
+
+[font]
+size = 12.5
+
+[font.offset]
+x = 0
+y = 0
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.normal]
+family = "Jetbrains Mono NL"
+# family: IBM Plex Mono
+# family: Monoid
+# family: Space Mono
+# family: Ubuntu Mono
+# family: Terminus (TTF)
+# family: Unifont
+# family: Courier New
+# family: Courier Prime Code
+# family: Writer
+# family: Menlo
+# family: FiraMono Nerd Font
+# family: RobotoMono Nerd Font
+# family: SauceCodePro Nerd Font
+# family: InconsolataGo Nerd Font
+style = "Regular"
+# style = "Medium"
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.primary]
+# background = "#262626"
+# background = "#202020"
+# background = "#181514"
+# background = "#0D0D0D"
+# background = "#0b0801"
+# background = "#1C1D1F"
+# background = "#3B59C7"
+# background = "#071843"
+background = "#081F51"
+# background = "#0e0b04"
+foreground = "#c7c7c7"
+
+[colors.normal]
+black = "#000000"
+blue = "#0000ee"
+cyan = "#00c5c7"
+green = "#00c200"
+magenta = "#c930c7"
+red = "#c91b00"
+white = "#999999"
+yellow = "#a2734c"
+
+[colors.bright]
+black = "#676767"
+blue = "#5555ff"
+cyan = "#5ffdff"
+green = "#5ff967"
+magenta = "#ff76ff"
+red = "#ff6d67"
+white = "#fffeff"
+yellow = "#e9ad0c"
+
+[colors.cursor]
+background = "#c7c7c7"
+foreground = "#262626"
+
+# [schemes.default.bright]
+# black = "#676767"
+# blue = "#5555ff"
+# cyan = "#5ffdff"
+# green = "#5ff967"
+# magenta = "#ff76ff"
+# red = "#ff6d67"
+# white = "#fffeff"
+# yellow = "#e9ad0c"
+#
+# [schemes.default.cursor]
+# background = "#c7c7c7"
+# foreground = "#262626"
+#
+# [schemes.default.normal]
+# black = "#000000"
+# blue = "#0000ee"
+# cyan = "#00c5c7"
+# green = "#00c200"
+# magenta = "#c930c7"
+# red = "#c91b00"
+# white = "#999999"
+# yellow = "#a2734c"
+#
+# [schemes.default.primary]
+# background = "#262626"
+# foreground = "#c7c7c7"
+#
+# [schemes.dunno.bright]
+# black = "#555555"
+# blue = "#5555ff"
+# cyan = "#55ffff"
+# green = "#55ff55"
+# red = "#ff5555"
+# white = "#ffffff"
+# yellow = "#f7cd94"
+#
+# [schemes.dunno.cursor]
+# background = "#b8b8b8"
+# foreground = "#000000"
+#
+# [schemes.dunno.normal]
+# black = "#000000"
+# blue = "#0000aa"
+# cyan = "#00aaaa"
+# green = "#00aa00"
+# magenta = "#aa00aa"
+# red = "#aa0000"
+# white = "#aaaaaa"
+# yellow = "#aa5500"
+#
+# [schemes.dunno.primary]
+# background = "#000000"
+# foreground = "#aaaaaa"
+#
+# [schemes.hacker.bright]
+# black = "#676767"
+# blue = "#6871ff"
+# cyan = "#5ffdff"
+# green = "#5ff967"
+# magenta = "#ff76ff"
+# red = "#ff6d67"
+# white = "#fffeff"
+# yellow = "#f7cd94"
+#
+# [schemes.hacker.cursor]
+# background = "#c7c7c7"
+# foreground = "0x000000"
+#
+# [schemes.hacker.normal]
+# black = "#000000"
+# blue = "#0225c7"
+# cyan = "#00c5c7"
+# green = "#00c200"
+# magenta = "#c930c7"
+# red = "#c91b00"
+# white = "#c7c7c7"
+# yellow = "#c7c400"
+#
+# [schemes.hacker.primary]
+# background = "#000000"
+# foreground = "#c7c7c7"
+#
+# [schemes.xterm.bright]
+# black = "#7f7f7f"
+# blue = "#5c5cff"
+# cyan = "#00ffff"
+# green = "#00ff00"
+# magenta = "#ff00ff"
+# red = "#ff0000"
+# white = "#ffffff"
+# yellow = "#ffff00"
+#
+# [schemes.xterm.cursor]
+# background = "#ffffff"
+# foreground = "#000000"
+#
+# [schemes.xterm.normal]
+# black = "#000000"
+# blue = "#0000ee"
+# cyan = "#00cdcd"
+# green = "#00cd00"
+# magenta = "#cd00cd"
+# red = "#cd0000"
+# white = "#e5e5e5"
+# yellow = "#cdcd00"
+#
+# [schemes.xterm.primary]
+# background = "#000000"
+# foreground = "#ffffff"

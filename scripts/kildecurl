@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+_have() { type "$1" &>/dev/null; }
+
+if [[ "$#" -ne 1 ]]; then
+	echo "Usage: ${0##*/} <url>" >&2
+	exit 1
+fi
+
+! _have lynx && echo "Requires lynx" >&2 && exit 1
+! _have jq && echo "Requires jqlang/jq" >&2 && exit 1
+
+export_key() {
+	local env=$1 secret=$2 key=$3 value
+	[[ -z "${!env}" ]] && {
+		value=$(gopass show -o "$(gopass ls --flat | grep -m1 "^$secret")" "$key" 2>/dev/null) || {
+			echo "Error: Failed to retrieve key from password store" >&2
+			return 1
+		}
+		export "$env=$value"
+	} || return 0
+}
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+if [[ -f "$SCRIPT_DIR/key.txt" ]]; then
+	declare OPENAI_API_KEY
+	OPENAI_API_KEY=$(head -1 key.txt)
+	export OPENAI_API_KEY
+else
+	export_key "OPENAI_API_KEY" "openai.com/openai" "api" || exit 1
+fi
+
+url="$1"
+html="$(curl "$1" -s | lynx -stdin -display_charset=utf-8 -dump -nomargins -nonumbers -nolist | jq -sR .)"
+query='
+Lag en kildeoppføring av den oppgitte teksten. Bruk dette oppsettet:
+
+Forfatter. (år, dato). Tittel. Hentet fra URL.
+
+Eks:
+Olsen, Nils (1999, 3. mai). Hvem var Martin Luther King jr.? Hentet fra http://www.hioa.no/prosjekt/martinlutherking.htm
+
+Hvis noe av informasjonen ikke er tilgjenelig, hopp over det. Returner bare kildeoppføringen, ingenting annet.
+'
+
+json_payload=$(
+	jq -n --arg query "$query" --arg url "$url" --arg html "$html" --arg model "gpt-4-vision-preview" '{
+    model: $model,
+    messages: [
+      { role: "user", content: $query },
+      { role: "user", content: ("URL: " + $url) },
+      { role: "user", content: $html }
+    ],
+    max_tokens: 4096
+  }'
+)
+
+response=$(
+	curl -s -w "%{http_code}" "https://api.openai.com/v1/chat/completions" \
+		-H "Content-Type: application/json" \
+		-H "Authorization: Bearer $OPENAI_API_KEY" \
+		-d "$json_payload"
+)
+
+http_code=$(tail -1 <<<"$(jq <<<"$response")")
+response_body=$(head -n-1 <<<"$(echo "$response" | jq .)")
+
+if [[ "$http_code" -ne 200 ]]; then
+	echo "Error: HTTP status code $http_code" >&2
+	echo "Message: $(jq -r '.error.message' <<<"$response_body")" >&2
+	exit 1
+fi
+
+jq -r '.choices[0].message.content' <<<"$response_body"

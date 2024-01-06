@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/gopass && mkdir ~/.config/gopass
+
+ln -sf "$PWD/config" ~/.config/gopass/config

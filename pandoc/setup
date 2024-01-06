@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+! test -d ~/.config && mkdir ~/.config
+! test -d ~/.config/pandoc && mkdir ~/.config/pandoc
+
+ln -sf "$PWD/template.html" ~/.config/pandoc/template.html
+ln -sf "$PWD/highlight.theme" ~/.config/pandoc/highlight.theme
+ln -sf "$PWD/stylesheet.css" ~/.config/pandoc/stylesheet.css

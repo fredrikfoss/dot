@@ -1,0 +1,41 @@
+{
+  "title": "HHKB [control] behavior",
+  "rules": [
+    {
+      "description": "Post [escape] if [left_control] is pressed alone",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_control",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "left_control"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "escape"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "device_if",
+              "identifiers": [
+                {
+                  "description": "HHKB keyboard",
+                  "vendor_id": 1278,
+                  "product_id": 33
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

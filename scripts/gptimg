@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# Retrieves and exports OPENAI_API_KEY key-value from password store
+# using gopass and invokes a ChatGPT query and screenshot
+
+_have() { type "$1" &>/dev/null; }
+
+export_key() {
+	local env=$1 secret=$2 key=$3 value
+	if [[ -z "${!env}" ]]; then
+		value=$(gopass show -o "$(gopass ls --flat | grep -m1 "^$secret")" "$key" 2>/dev/null) || {
+			echo "Error: Failed to retrieve key from password store" >&2
+			return 1
+		}
+		export "$env=$value"
+	fi
+}
+
+if [[ -z "$1" && -t 0 ]]; then
+	echo "Usage: ${0##*/} <query>" >&2
+	exit 1
+fi
+
+! _have jq && echo "Requires jq" >&2 && exit 1
+! _have curl && echo "Requires curl" >&2 && exit 1
+! _have gopass && echo "Requires gopasspw/gopass" >&2 && exit 1
+
+tempdir=$(mktemp -d)
+trap 'rm -rf "$tempdir"' EXIT
+
+export_key "OPENAI_API_KEY" "openai.com/openai" "api" || exit 1
+query="$*"
+image=$(screencapture -iox -t png "$tempdir/img.png" && base64 "$tempdir/img.png" 2>/dev/null) || exit 1
+data=$(
+	curl -s -w "%{http_code}" "https://api.openai.com/v1/chat/completions" \
+		-H "Content-Type: application/json" \
+		-H "Authorization: Bearer $OPENAI_API_KEY" \
+		-d @- <<-EOM
+			    {
+			      "model": "gpt-4-vision-preview",
+			      "messages": [
+			        {
+			          "role": "user",
+			          "content": [
+			            {
+			              "type": "text",
+			              "text": "$query"
+			            },
+			            {
+			              "type": "image_url",
+			              "image_url": {
+			                "url": "data:image/png;base64,${image}"
+			              }
+			            }
+			          ]
+			        }
+			      ],
+			      "max_tokens": 4096
+			    }
+		EOM
+)
+
+http_code=$(tail -1 <<<"$(jq <<<"$data")")
+response=$(head -n-1 <<<"$(echo "$data" | jq .)")
+
+[[ "$http_code" -ne 200 ]] && {
+	echo "Error: HTTP status code $http_code" >&2
+	echo "Message: $(jq -r '.error.message' <<<"$response")" >&2
+	exit 1
+}
+
+jq -r '.choices[0].message.content' <<<"$response"

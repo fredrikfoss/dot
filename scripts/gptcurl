@@ -1,0 +1,52 @@
+#!/bin/sh
+
+# Retrieves and exports OPENAI_API_KEY key-value from password store
+# using gopass and invokes a ChatGPT query with curl.
+
+_have() { command -v "$1" >/dev/null 2>&1; }
+
+test $# -lt 1 && test -t 0 && {
+	echo "Usage: ${0##*/} <query>" >&2
+	exit 1
+}
+
+! _have jq && echo "Requires jqlang/jq" >&2 && exit 1
+! _have gopass && echo "Requires gopasspw/gopass" >&2 && exit 1
+
+test -z "$OPENAI_API_KEY" && {
+	value=$(gopass show -o "$(gopass ls --flat | grep -m1 "^openai.com/openai")" "api" 2>/dev/null) || {
+		echo "Failed to retrieve key from password store" >&2
+		exit 1
+	}
+	export OPENAI_API_KEY="$value"
+}
+
+query="$*"
+
+payload=$(jq -nc --arg query "$query" \
+	'{
+  model: "gpt-4-vision-preview",
+  messages: [
+    { role: "user", content: $query }
+  ],
+  max_tokens: 4096
+}')
+
+response=$(
+	curl -s -w "%{http_code}" \
+		-H "Content-Type: application/json" \
+		-H "Authorization: Bearer $OPENAI_API_KEY" \
+		-d "$payload" \
+		"https://api.openai.com/v1/chat/completions"
+)
+
+http_code=$(echo "$response" | jq | tail -n 1)
+response_body=$(echo "$response" | jq | head -n -1)
+
+test "$http_code" -ne 200 && {
+	echo "Error: HTTP status code $http_code" >&2
+	echo "Message: $(echo "$response_body" | jq -r '.error.message')" >&2
+	exit 1
+}
+
+echo "$response_body" | jq -r '.choices[0].message.content'
