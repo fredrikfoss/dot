@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "go install filippo.io/age/cmd/...@latest"

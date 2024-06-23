@@ -1,0 +1,38 @@
+#!/bin/sh
+
+cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+cache="$cachedir/wmenu_run"
+
+[ -d "$cachedir" ] || mkdir -p "$cachedir"
+
+uptodate() {
+	[ -f "$cache" ] || return 1
+	IFS=:
+	for path in $PATH; do
+		# non-POSIX
+		test "$path" -nt "$cache" && return 1
+	done
+	return 0
+}
+
+bins() {
+	IFS=:
+	for path in $PATH; do
+		for bin in "$path"/*; do
+			[ -x "$bin" ] && echo "${bin##*/}"
+		done
+	done
+}
+
+path() {
+	if uptodate; then
+		cat "$cache"
+	else
+		bins | sort -u | tee "$cache"
+	fi
+}
+
+# path | wmenu "$@" | ${SHELL:-"/bin/sh"} &
+# path | wmenu -x "$@"
+# https://lists.sr.ht/~adnano/wmenu-devel/%3Cea252cbaf9003a3eb8a840e037296d89@disroot.org%3E
+path | wmenu "$@" | xargs swaymsg exec --

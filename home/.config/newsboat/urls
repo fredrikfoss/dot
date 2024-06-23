@@ -1,0 +1,41 @@
+# Asahi Linux
+https://asahilinux.org/blog/index.xml "~Blog" ! asahilinux
+https://old.reddit.com/r/AsahiLinux/.rss "~Reddit" ! asahilinux
+https://social.treehouse.systems/@AsahiLinux.rss "~Mastadon" ! asahilinux
+https://rosenzweig.io/feed.xml "~Rosenzweig" ! asahilinux
+"query:Asahi Linux:tags # \"asahilinux\""
+
+https://hnrss.org/best
+https://reddit.com/r/programming/.rss "~r/programming"
+https://reddit.com/r/technology/.rss "~r/technology"
+https://rss.slashdot.org/Slashdot/slashdotMain
+https://hackaday.com/blog/feed
+https://christitus.com/index.xml
+https://pixls.us/feed.xml
+https://justine.lol/rss.xml
+https://simonwillison.net/atom/everything
+https://nick.scialli.me/feed/feed.xml
+https://danluu.com/atom.xml
+https://jamesg.blog/feeds/posts.xml
+# https://mliezun.github.io (no feed yet)
+https://joev.dev/feed.rss
+https://mischavandenburg.com/index.xml
+# https://matheustavares.gitlab.io/feed.xml
+https://jasoneckert.github.io/index.xml
+https://echorand.me/index.xml
+https://blog.shadura.me/atom.xml
+https://neil.computer/rss/
+https://robbyzambito.me/posts/index.xml
+https://toast.al/posts/feed.atom
+
+# Dr. Zack Scholls' blog
+https://infinitedigits.co/index.xml
+
+# Latacora blog: security and cryptography
+https://www.latacora.com/blog/index.xml
+
+# Andrew Kelly
+https://andrewkelley.me/rss.xml
+
+# LinuxLinks
+https://linuxlinks.com/feed

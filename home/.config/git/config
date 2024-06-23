@@ -1,0 +1,55 @@
+[user]
+	name = Fredrik Foss-Indrehus
+	email = fredrikfoss@fr.urbanpets.no
+	signingkey = 0x5B2A8AA1AB4EA06C
+
+[github]
+	user = fredrikfoss
+	name = Fredrik Foss-Indrehus
+
+[commit]
+	gpgsign = true
+	verbose = true
+
+[core]
+	excludesFile = ~/.config/git/ignore
+
+[init]
+	defaultBranch = main
+
+[transfer]
+	fsckobjects = true
+
+[fetch]
+	prune = true
+	prunetags = true
+	fsckobjects = true
+
+[receive]
+	fsckobjects = true
+
+[pull]
+	rebase = true
+
+[push]
+	default = current
+
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+
+[log]
+	date = iso
+
+[alias]
+	s = status -sb
+	b = branch -av
+	l = log --graph --all --date=short --pretty=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(white)(%ad)%C(reset) %C(white)<%an>%C(reset)%n  %s'
+	g = log --graph --all --format='%C(yellow)%h%C(dim white)%d%C(reset) %C(cyan)%ar%C(reset) %C(green)%an%C(reset)%n\t%C(white)%s%C(reset)'
+	whoami = !git config user.name && git config user.email
+
+[include]
+	path = ~/.config/git/config_local
+	path = ~/.gitconfig_local

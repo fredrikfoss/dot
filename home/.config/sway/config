@@ -1,0 +1,289 @@
+### Variables
+#
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+set $term foot
+
+# font pango:monospace 6
+font pango:DejaVu Sans Mono 7
+# font pango:Berkeley Mono 8
+gaps inner 0
+gaps outer 0
+default_border normal 0
+focus_follows_mouse no
+
+# Autostart
+exec_always mako
+exec_always blueman-applet
+exec_always nm-applet --indicator
+# exec_always "${XDG_CONFIG_HOME:-$HOME/.config}/sway/bin/clamshell"
+
+exec_always killall swayidle; swayidle -w \
+    timeout 900 'swaylock -f -c 000000' \
+    timeout 1200 'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"' \
+    before-sleep 'playerctl -a stop' \
+    before-sleep 'swaylock -f -c 000000'
+
+# Windows
+for_window {
+    [shell="xwayland"] title_format "[X] %title"
+    [app_id="firefox"] inhibit_idle fullscreen
+    [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable
+    [app_id="mpv"] inhibit_idle focus
+    [window_role="pop-up"] floating enable
+    [window_role="bubble"] floating enable
+    [window_role="dialog"] floating enable
+    [window_type="dialog"] floating enable
+}
+
+# firefox wayland screensharing indicator
+
+### Output configuration
+#
+# output * bg #303030 solid_color
+
+output eDP-1 {
+    resolution 2560x1664
+    position 0,0
+    scale 1.5
+    adaptive_sync on
+}
+
+### Input configuration
+#
+input "type:keyboard" {
+    # xkb_layout us
+    xkb_layout "norwerty"
+    xkb_variant ,nodeadkeys
+    xkb_options caps:ctrl_modifier
+    # xkb_options caps:ctrl_modifier,compose:ralt
+    # xkb_options caps:ctrl_modifier,grp:alt_shift_toggle
+    repeat_delay 150
+    repeat_rate 50
+}
+
+input "type:touchpad" {
+    dwt enabled
+    tap enabled
+    click_method clickfinger
+    middle_emulation enabled
+    tap_button_map lrm
+    natural_scroll enabled
+    accel_profile adaptive
+    pointer_accel 0.5
+    scroll_factor 2
+}
+
+### Key bindings
+#
+# Basics
+#
+floating_modifier $mod normal
+# set $menu ~/.config/sway/bin/wmenu-run
+set $menu j4-dmenu-desktop -t foot -d 'wmenu -i -l10 -p "Run:"' --wrapper 'swaymsg exec --'
+bindsym {
+    $mod+Return exec $term
+    $mod+q kill
+    $mod+d exec $menu
+    $mod+Shift+c reload
+}
+
+#
+# Moving around
+#
+bindsym {
+    $mod+$left  focus left
+    $mod+$down  focus down
+    $mod+$up    focus up
+    $mod+$right focus right
+
+    $mod+Shift+$left  move left
+    $mod+Shift+$down  move down
+    $mod+Shift+$up    move up
+    $mod+Shift+$right move right
+}
+
+#
+# Workspaces
+#
+bindsym {
+    $mod+1 workspace number 1
+    $mod+2 workspace number 2
+    $mod+3 workspace number 3
+    $mod+4 workspace number 4
+    $mod+5 workspace number 5
+    $mod+6 workspace number 6
+    $mod+7 workspace number 7
+    $mod+8 workspace number 8
+    $mod+9 workspace number 9
+    $mod+0 workspace number 10
+
+    $mod+Shift+1 move container to workspace number 1
+    $mod+Shift+2 move container to workspace number 2
+    $mod+Shift+3 move container to workspace number 3
+    $mod+Shift+4 move container to workspace number 4
+    $mod+Shift+5 move container to workspace number 5
+    $mod+Shift+6 move container to workspace number 6
+    $mod+Shift+7 move container to workspace number 7
+    $mod+Shift+8 move container to workspace number 8
+    $mod+Shift+9 move container to workspace number 9
+    $mod+Shift+0 move container to workspace number 10
+}
+
+#
+# Layout stuff
+#
+bindsym {
+    $mod+b splith
+    $mod+v splitv
+
+    $mod+s layout stacking
+    $mod+w layout tabbed
+    $mod+e layout toggle split
+
+    $mod+f fullscreen
+    $mod+Shift+f floating toggle; resize set 2560 1090; move position 0 0
+
+    $mod+Shift+space floating toggle
+
+    $mod+space focus mode_toggle
+
+    $mod+a focus parent
+}
+
+#
+# Scratchpad
+#
+bindsym {
+    $mod+Shift+minus move scratchpad
+    $mod+minus scratchpad show
+}
+
+#
+# Resizing containers
+#
+mode "resize" {
+    bindsym {
+        $left resize shrink width 10
+        $down resize grow height 10
+        $up resize shrink height 10
+        $right resize grow width 10
+
+        Return mode "default"
+        Escape mode "default"
+        $mod+r mode "default"
+    }
+}
+bindsym $mod+r mode "resize"
+
+#
+### Power management
+#
+set $power_control power control: [l]ock, [e]xit, [s]uspend, [r]eboot, [p]ower off
+mode "$power_control" {
+  bindsym l exec swaylock -f -c 000000, mode default
+  bindsym e exec swaymsg exit, mode default
+  bindsym s exec swaymsg exec systemctl suspend, mode default
+  bindsym r exec swaymsg exec reboot, mode default
+  bindsym p exec swaymsg exec poweroff, mode default
+
+  bindsym Escape mode default
+  bindsym $mod+z mode default
+}
+bindsym $mod+z mode "$power_control"
+
+#
+### Screenshot
+#
+set $screenshot screenshot: [s]ave, [c]opy, [o]cr'
+mode "$screenshot" {
+    bindsym s exec 'grim -g "$(slurp)"', mode default
+    bindsym c exec 'grim -g "$(slurp)" - | wl-copy', mode default
+    bindsym o exec 'grim -g "$(slurp)" - | tesseract -l eng+nor - - | wl-copy', mode default
+
+    bindsym Escape mode default
+    bindsym $mod+Shift+s mode default
+}
+bindsym $mod+Shift+s mode "$screenshot"
+
+#
+### Misc
+#
+bindsym {
+    # Copy password from password-store
+    $mod+Shift+p exec ~/.config/sway/bin/passmenu
+}
+
+#
+# Set brightness
+#
+set $brightness_notification_cmd command -v notify-send >/dev/null && \
+    VALUE=$(brightnessctl --percentage get) && \
+    notify-send -e -h string:x-canonical-private-synchronous:brightness \
+    -h "int:value:$VALUE" -t 800 "Brightness: ${VALUE}%"
+bindsym {
+    XF86MonBrightnessDown exec 'brightnessctl set 5%- && $brightness_notification_cmd'
+    XF86MonBrightnessUp exec 'brightnessctl set 5%+ && $brightness_notification_cmd'
+}
+
+#
+# Set volume
+#
+set $volume_notification_cmd ~/.config/sway/bin/volume-notification
+bindsym  {
+    XF86AudioLowerVolume exec 'wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%- && $volume_notification_cmd'
+    XF86AudioRaiseVolume exec 'wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+ && $volume_notification_cmd'
+    XF86AudioMute exec 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && $volume_notification_cmd'
+    XF86AudioMicMute exec 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+}
+
+#
+# Set media playback
+#
+set $media_notification_cmd command -v notify-send >/dev/null && \
+    ARTIST=$(playerctl metadata artist) && \
+    TITLE=$(playerctl metadata title) && \
+    STATUS=$(playerctl status) && \
+    notify-send -e -h string:x-canonical-private-synchronous:media \
+    -t 800 "$STATUS: $ARTIST - $TITLE"
+bindsym {
+    XF86AudioNext exec 'playerctl next && $media_notification_cmd'
+    XF86AudioPrev exec 'playerctl previous && $media_notification_cmd'
+    XF86AudioPlay exec 'playerctl play-pause && $media_notification_cmd'
+    XF86AudioPause exec 'playerctl play-pause && $media_notification_cmd'
+}
+
+
+include colorscheme
+# class                 border  bg      fg      indicator child_border
+client.focused          $base05 $base05 $base0F $base04 $base04
+client.focused_inactive $base03 $base03 $base0C $base02 $base02
+client.unfocused        $base03 $base03 $base0C $base02 $base02
+# client.urgent           $base08 $base08 $base00 $base08 $base08
+# client.placeholder      $base00 $base00 $base05 $base00 $base00
+# client.background       $base0F
+
+bar {
+    position top
+    status_command i3status-rs
+
+    colors {
+        background $base00
+        separator  $base06
+        statusline $base04
+
+        # State             border  bg      fg
+        focused_workspace   $base07 $base06 $base0F
+        active_workspace    $base04 $base03 $base0C
+        inactive_workspace  $base04 $base03 $base0C
+        urgent_workspace    $base08 $base08 $base0F
+        binding_mode        $base00 $base0A $base0F
+    }
+}
+
+include ~/.config/sway/config.d/*.conf
+include /etc/sway/config.d/*

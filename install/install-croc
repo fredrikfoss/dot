@@ -1,0 +1,67 @@
+#!/bin/bash
+set -e
+
+# Installs the latest release of croc from https://github.com/schollz/croc to
+# ~/.local without requiring root access.
+#
+# Note that the downloaded tar file is not removed and can be found in either
+# ~/Downloads or /tmp.
+
+declare REPO_OWNER=schollz
+declare REPO_NAME=croc
+declare EXE_NAME=croc
+declare EXE_TARGETDIR="$HOME/.local/bin"
+declare OS ARCH
+declare TEMPDIR
+
+die() {
+	echo "$@" >&2
+	exit 1
+}
+
+init_os() {
+	OS=$(uname -s)
+	case $OS in
+	Linux*) OS=Linux ;;
+	Darwin*) OS=macOS ;;
+	MINGW* | MSYS*) OS=Windows ;;
+	esac
+}
+
+init_arch() {
+	ARCH=$(uname -m)
+	case $ARCH in
+	aarch64) ARCH=ARM64 ;;
+	arm64) ARCH="ARM64" ;;
+	x86_64) ARCH=64bit ;;
+	esac
+}
+
+download() {
+	local url path
+	url=$(curl -sSL "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" |
+		jq -r '.assets[]
+			| select(.name | test("'"$OS"'.*'"$ARCH"'.*tar.gz$"))
+			| .browser_download_url') ||
+		die "unable to fetch donwload URL"
+	path="$([[ -d $HOME/Downloads ]] && echo "$HOME/Downloads" || echo /tmp)/${url##*/}"
+	curl -L "$url" -o "$path"
+	tar -xf "$path" -C "$TEMPDIR"
+	echo "downloaded $REPO_OWNER/$REPO_NAME to $path" >&2
+}
+
+install_exe() {
+	find "$TEMPDIR" -type f -name "$EXE_NAME" -exec mv -t "$EXE_TARGETDIR" {} +
+	chmod +x "$EXE_TARGETDIR/$EXE_NAME"
+	echo "installed $EXE_NAME to $EXE_TARGETDIR" >&2
+}
+
+TEMPDIR=$(mktemp -d)
+trap 'rm -rf -- "$TEMPDIR"' EXIT
+
+init_os
+init_arch
+download
+
+mkdir -p "$EXE_TARGETDIR"
+install_exe

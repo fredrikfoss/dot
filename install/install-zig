@@ -1,0 +1,76 @@
+#!/bin/bash
+set -euo pipefail
+
+# Installs the latest nightly build of zig from https://ziglang.org/download to
+# ~/.local without requiring root access.
+#
+# Note that the downloaded tar file is not removed and can be found in either
+# ~/Downloads or /tmp.
+
+declare REPO=ziglang.org/download
+declare NAME=zig
+declare TARGETDIR="$HOME/.local"
+declare OS ARCH
+declare TEMPDIR
+TEMPDIR=$(mktemp -d)
+trap 'rm -rf -- "$TEMPDIR"' EXIT
+
+die() {
+	echo "$@" >&2
+	exit 1
+}
+
+init_env() {
+	OS=$(uname -s)
+	case $OS in
+		Linux*) OS=linux ;;
+		Darwin*) OS=macos ;;
+		MINGW* | MSYS*) OS=windows ;;
+		*) die "Unsupported OS: $OS" ;;
+	esac
+
+	ARCH=$(uname -m)
+	case $ARCH in
+		aarch64) ARCH=aarch64 ;;
+		arm64) ARCH="aarch64" ;;
+		x86_64) ARCH=x86_64 ;;
+		*) die "Unsupported architecture: $ARCH" ;;
+	esac
+}
+
+check_sha() {
+	local expected_sha actual_sha
+	expected_sha=$(curl -sSL "https://$REPO/index.json" |
+		jq -r --arg arch "$ARCH" --arg os "$OS" '.master[$arch + "-" + $os].shasum') ||
+		die "Unable to fetch SHA hash"
+	actual_sha=$(shasum -a 256 "$1" | awk '{print $1}')
+	[[ $expected_sha != "$actual_sha" ]] &&
+		die "SHA checksum verification failed: expected $expected_sha, got $actual_sha"
+}
+
+download() {
+	local url path
+	url=$(curl -sSL "https://$REPO/index.json" |
+		jq -r --arg arch "$ARCH" --arg os "$OS" '.master[$arch + "-" + $os].tarball') ||
+		die "unable to fetch download URL"
+	echo "$url"
+	path="$([[ -d $HOME/Downloads ]] && echo "$HOME/Downloads" || echo /tmp)/${url##*/}"
+	echo "$path"
+	curl -L "$url" -o "$path"
+	check_sha "$path"
+	tar -xf "$path" -C "$TEMPDIR"
+	echo "Downloaded tarball to $path" >&2
+}
+
+install() {
+	local dir
+	dir=$(find "$TEMPDIR" -mindepth 1 -maxdepth 1 -type d -print -quit)
+	mv "$dir" "$TARGETDIR/$NAME"
+	echo "Installed $NAME to $TARGETDIR" >&2
+}
+
+init_env
+download
+mkdir -p "$TARGETDIR"
+rm -rf "${TARGETDIR:?}/$NAME"
+install

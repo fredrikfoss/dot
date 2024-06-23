@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "pipx install --force vsg"

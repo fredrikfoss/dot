@@ -1,0 +1,4 @@
+set selection-clipboard clipboard
+set recolor-reverse-video true
+set recolor-keephue true
+set incremental-search true

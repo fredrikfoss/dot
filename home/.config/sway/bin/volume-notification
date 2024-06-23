@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Get the current volume and mute status
+VOLUME_INFO=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+VOLUME=$(echo "$VOLUME_INFO" | grep -oP 'Volume: \K\d+\.\d+')
+MUTED=$(echo "$VOLUME_INFO" | grep -oP '\[MUTED\]' || echo "")
+
+# Convert volume to percentage
+VOLUME_PERCENT=$(echo "$VOLUME * 100" | bc | cut -d'.' -f1)
+
+# Check if muted
+if [ -n "$MUTED" ]; then
+	notify-send -e -h string:x-canonical-private-synchronous:volume \
+		-h "int:value:${VOLUME_PERCENT}" -t 800 "Volume: Muted"
+else
+	notify-send -e -h string:x-canonical-private-synchronous:volume \
+		-h "int:value:${VOLUME_PERCENT}" -t 800 "Volume: ${VOLUME_PERCENT}%"
+fi

@@ -1,0 +1,32 @@
+set editing-mode vi
+TAB: menu-complete
+"\e[Z": menu-complete-backward
+set keymap vi
+
+# do not bell on tab-completion
+set bell-style none
+
+set meta-flag on
+set input-meta on
+set convert-meta off
+set output-meta on
+
+# Completed names which are symbolic links to directories have a slash
+# appended
+set mark-symlinked-directories on
+
+set enable-bracketed-paste on
+set keyseq-timeout 1
+# set colored-completion-prefix on
+# set colored-stats on
+set completion-query-items 100
+set completion-ignore-case on
+set visible-stats on
+set match-hidden-files on
+set menu-complete-display-prefix on
+set page-completions off
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set skip-completed-text on
+set echo-control-characters off
+set show-mode-in-prompt off

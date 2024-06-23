@@ -1,0 +1,49 @@
+set $base00 #000000
+set $base01 #101010
+set $base02 #202020
+set $base03 #303030
+set $base04 #404040
+set $base05 #505050
+set $base06 #606060
+set $base07 #707070
+set $base08 #808080
+set $base09 #909090
+set $base0A #A0A0A0
+set $base0B #B0B0B0
+set $base0C #C0C0C0
+set $base0D #D0D0D0
+set $base0E #E0E0E0
+set $base0F #F0F0F0
+
+# TODO: Add colors
+
+
+# set $base05 #B0B0B0
+# set $base06 #D0D0D0
+# set $base07 #F0F0F0
+#
+# set $base08 #ab4642
+# set $base09 #dc9656
+# set $base0A #f7ca88
+# set $base0B #a1b56c
+# set $base0C #86c1b9
+# set $base0D #7cafc2
+# set $base0E #ba8baf
+# set $base0F #a16946
+
+# set $base00 #181818
+# set $base01 #282828
+# set $base02 #383838
+# set $base03 #585858
+# set $base04 #b8b8b8
+# set $base05 #d8d8d8
+# set $base06 #e8e8e8
+# set $base07 #f8f8f8
+# set $base08 #ab4642
+# set $base09 #dc9656
+# set $base0A #f7ca88
+# set $base0B #a1b56c
+# set $base0C #86c1b9
+# set $base0D #7cafc2
+# set $base0E #ba8baf
+# set $base0F #a16946

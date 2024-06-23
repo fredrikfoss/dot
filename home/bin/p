@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+PREFIX=${PASSWORD_STORE_DIR:-$HOME/.password-store}
+export FZF_DEFAULT_OPTS=
+name=$(
+	cd "$PREFIX"
+	find . -type f -name '*.gpg' -exec sh -c '
+		for f do
+			f=${f#./}; printf "%s\n" "${f%.gpg}"
+		done
+	' sh-find {} + | fzf --height 40% --reverse --no-multi
+)
+
+pass "${@}" "$name"
