@@ -14,4 +14,5 @@ password=$(printf '%s\n' "${password_files[@]}" | wmenu -i -l10 -p "Pass:" "$@")
 [[ -n $password ]] || exit
 
 # pass show -c "$password" 2>/dev/null
-pass show "$password" | head -n 1 | tr -d '\n' | wtype -
+pass show "$password" 2>/dev/null | head -n 1 | tr -d '\n' | wtype -
+pass otp "$password" 2>/dev/null | tr -d '\n' | wtype -
