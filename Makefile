@@ -1,7 +1,7 @@
 CONF_DIR := home
 TARGET_DIR := $(HOME)
 
-CONFIGS := $(sort $(filter-out all list help,$(shell grep -E '^[a-zA-Z0-9_-]+:' $(MAKEFILE_LIST) |\
+CONFIGS := $(sort $(filter-out help list all,$(shell grep -E '[a-zA-Z0-9_-]+:$$' $(MAKEFILE_LIST) |\
 	cut -d ':' -f 1)) \
 	$(patsubst $(CONF_DIR)/.config/%,%,$(wildcard $(CONF_DIR)/.config/*)))
 
