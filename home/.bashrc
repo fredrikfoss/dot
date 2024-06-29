@@ -224,6 +224,7 @@ fi
 
 # export LESS="-FR --use-color"
 export LESS="-FR"
+export LESSHISTFILE=-
 
 # export LESS_TERMCAP_mb=$'\e[35m' # begin bold
 # export LESS_TERMCAP_md=$'\e[33m' # begin blink

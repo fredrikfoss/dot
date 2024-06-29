@@ -18,20 +18,20 @@ declare OS ARCH
 init_arch() {
 	ARCH=$(uname -m)
 	case $ARCH in
-	aarch64) ARCH="ARM64" ;;
-	arm64) ARCH="ARM64" ;;
-	x86) ARCH="32bit" ;;
-	x86_64) ARCH="64bit" ;;
-	i686) ARCH="32bit" ;;
-	i386) ARCH="32bit" ;;
+		aarch64) ARCH="ARM64" ;;
+		arm64) ARCH="ARM64" ;;
+		x86) ARCH="32bit" ;;
+		x86_64) ARCH="64bit" ;;
+		i686) ARCH="32bit" ;;
+		i386) ARCH="32bit" ;;
 	esac
 }
 
 init_os() {
 	OS=$(uname -s)
 	case "$OS" in
-	Linux*) OS='Linux' ;;
-	Darwin*) OS='macOS' ;;
+		Linux*) OS='Linux' ;;
+		Darwin*) OS='macOS' ;;
 	esac
 }
 

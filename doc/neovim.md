@@ -8,6 +8,13 @@ sudo dnf install -y ripgrep # grep alternative
 sudo dnf install -y fd-find # find alternative
 ```
 
+## Install
+
+```sh
+dnf copr enable agriffis/neovim-nightly
+dnf install -y neovim python3-neovim
+```
+
 ## Keymaps
 
 Diagnostics:

@@ -14,9 +14,9 @@ endef
 
 help:
 	@echo "usage:"
-	@echo "    make [target]"
+	@echo "    make [option]"
 	@echo
-	@echo "targets:"
+	@echo "options:"
 	@echo "    help       # print this message"
 	@echo "    list       # print configs"
 	@echo "    all        # setup all configs"

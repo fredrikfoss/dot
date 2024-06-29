@@ -22,18 +22,18 @@ die() {
 init_os() {
 	OS=$(uname -s)
 	case $OS in
-	Linux*) OS=Linux ;;
-	Darwin*) OS=macOS ;;
-	MINGW* | MSYS*) OS=Windows ;;
+		Linux*) OS=Linux ;;
+		Darwin*) OS=macOS ;;
+		MINGW* | MSYS*) OS=Windows ;;
 	esac
 }
 
 init_arch() {
 	ARCH=$(uname -m)
 	case $ARCH in
-	aarch64) ARCH=ARM64 ;;
-	arm64) ARCH="ARM64" ;;
-	x86_64) ARCH=64bit ;;
+		aarch64) ARCH=ARM64 ;;
+		arm64) ARCH="ARM64" ;;
+		x86_64) ARCH=64bit ;;
 	esac
 }
 

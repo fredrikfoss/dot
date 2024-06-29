@@ -41,11 +41,6 @@ return {
                 shfmt = {
                     prepend_args = { "-ci" },
                 },
-                -- vsg = {
-                --     command = "vsg",
-                --     args = { "-of", "syntastic", "--fix", "-f", "$FILENAME" },
-                --     stdin = false,
-                -- },
             },
         })
 
