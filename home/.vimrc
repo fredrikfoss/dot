@@ -42,7 +42,7 @@ set noshowcmd
 set noshelltemp
 set noesckeys
 
-" Undo/backup/swap/viminfo
+" Undo, backup, swap, viminfo
 set undodir=~/.vim/undo//
 " set backupdir=~/.vim/backup//
 " set directory=~/.vim/swap//
@@ -146,6 +146,7 @@ autocmd FileType yaml highlight yamlBlockMappingKey ctermfg=NONE
 highlight markdownBlockquote ctermfg=8
 highlight MarkdownQuote ctermfg=12
 autocmd FileType markdown,pandoc match MarkdownQuote '^>.*$'
+
 highlight TrailingWhitespace ctermfg=NONE ctermbg=8
 match TrailingWhitespace /\s\+$/
 

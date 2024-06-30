@@ -8,8 +8,8 @@ esac
 
 # ---------------------- local utility functions ---------------------
 
-_have() { type "$1" &>/dev/null; }
-_source_if() { [[ -r "$1" ]] && . "$1"; }
+_have() { command -v "$1" &>/dev/null; }
+_source_if() { [[ -r $1 ]] && . "$1"; }
 
 # ----------------------- environment variables ----------------------
 #                            (also see envx)
@@ -44,7 +44,8 @@ export SCRIPTS="$HOME/bin"
 export PICTURES="$HOME/Pictures"
 export MUSIC="$HOME/Music"
 export VIDEOS="$HOME/Videos"
-export PDFS="$GHREPOS/pdfs/docs"
+export PDFS="$GHREPOS/books/docs"
+export BOOKS="$GHREPOS/books/docs"
 export VIRTUALMACHINES="$HOME/VirtualMachines"
 export WORKSPACES="$HOME/Workspaces" # container home dirs for mounting
 export ZETDIR="$GHREPOS/zet"
@@ -204,12 +205,15 @@ export GPG_TTY
 
 # PINENTRY_PROGRAM= # might not need after all with rage
 
-# ------------------------ pass/passage/gopass -----------------------
+# ------------------------ pass/passage/pa/gopass --------------------
 
-export PASSAGE_DIR="${HOME}/.passage/store"
-export PASSAGE_IDENTITIES="${HOME}/.passage/identities"
-# export PASSWORD_STORE_CLIP_TIME=15
-# [[ -f "${HOME}/.local/bin/rage" ]] && export PASSAGE_AGE="${HOME}/.local/bin/rage"
+export PASSAGE_DIR="$HOME/.passage/store"
+export PASSAGE_IDENTITIES="$HOME/.passage/identities"
+# [[ -f $HOME/.local/bin/rage ]] && export PASSAGE_AGE="$HOME/.local/bin/rage"
+
+# export PA_DIR="$HOME/.pa/passwords"
+export PA_LENGTH=25
+export PA_PATTERN='[:graph:]'
 
 # ------------------------------- pager ------------------------------
 
@@ -253,7 +257,7 @@ export LESSHISTFILE=-
 # ----------------------------- dircolors ----------------------------
 
 if _have dircolors; then
-	if [[ -r "$HOME/.dircolors" ]]; then
+	if [[ -r $HOME/.dircolors ]]; then
 		eval "$(dircolors -b "$HOME/.dircolors")"
 	else
 		eval "$(dircolors -b)"
@@ -340,16 +344,16 @@ alias convertcurrency='EXCHANGERATE_API_KEY=$(pass exchangerate-api.com/api-key)
 
 envx() {
 	local envfile="${1:-"$HOME/.env"}"
-	[[ ! -e "$envfile" ]] && echo "$envfile not found" >&2 && return 1
+	[[ ! -e $envfile ]] && echo "$envfile not found" >&2 && return 1
 	while IFS= read -r line; do
 		name=${line%%=*}
 		value=${line#*=}
-		[[ -z "$name" || $name =~ ^# ]] && continue
+		[[ -z $name || $name =~ ^# ]] && continue
 		export "$name"="$value"
 	done <"$envfile"
 } && export -f envx
 
-if [[ -e "$HOME/.env" ]]; then
+if [[ -e $HOME/.env ]]; then
 	envx "$HOME/.env"
 fi
 
@@ -358,12 +362,12 @@ clone() {
 	local repo="${repo#https://github.com/}"
 	local repo="${repo#git@github.com:}"
 	[[ $repo =~ / ]] && user="${repo%%/*}"
-	[[ -z "$user" ]] && user="$GITUSER"
-	[[ -z "$user" ]] && user="$USER"
+	[[ -z $user ]] && user="$GITUSER"
+	[[ -z $user ]] && user="$USER"
 	local name="${repo##*/}"
 	local userd="$REPOS/github.com/$user"
 	local path="$userd/$name"
-	[[ -d "$path" ]] && cd "$path" && return
+	[[ -d $path ]] && cd "$path" && return
 	mkdir -p "$userd"
 	cd "$userd"
 	echo gh repo clone "$user/$name" -- --recurse-submodule
@@ -373,14 +377,14 @@ clone() {
 
 destroy() {
 	local file="$1"
-	[[ ! -f "$file" ]] && echo "$file not found" >&2 && return 1
+	[[ ! -f $file ]] && echo "$file not found" >&2 && return 1
 	read -p "destroy file? (y/n) " -n 1 -r && echo
 	[[ $REPLY =~ ^[Yy]$ ]] && shred -vzun 100 "$file"
 } && export -f destroy
 
 extract() {
 	local file="$1"
-	[[ ! -f "$file" ]] && echo "$file not found" >&2 && return 1
+	[[ ! -f $file ]] && echo "$file not found" >&2 && return 1
 	case "$file" in
 		*.tar.bz2) tar xjf "$1" ;;
 		*.tar.gz) tar xzf "$1" ;;
@@ -418,7 +422,6 @@ fcd() {
 # Use bash-completion if available
 if [[ -z $BASH_COMPLETION_VERSINFO ]]; then
 	_source_if /usr/share/bash-completion/bash_completion
-	# complete -F _command doas
 fi
 
 owncomp=(zet keg auth pomo config sshkey vic pdf ws ./build build b ./setup

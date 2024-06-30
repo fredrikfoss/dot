@@ -46,8 +46,8 @@
 [alias]
 	s = status -sb
 	b = branch -av
-	l = log --graph --all --date=short --pretty=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(white)(%ad)%C(reset) %C(white)<%an>%C(reset)%n  %s'
-	g = log --graph --all --format='%C(yellow)%h%C(dim white)%d%C(reset) %C(cyan)%ar%C(reset) %C(green)%an%C(reset)%n\t%C(white)%s%C(reset)'
+	l = log --graph --oneline --all --decorate --color --abbrev-commit --date=short --pretty=format:'%C(auto)%h%d %s %C(blue)<%an> %C(green)(%ad)'
+	g = log --graph --all --date=short --pretty=format:'%C(yellow)%h%C(reset)%C(auto)%d%C(reset) %C(white)(%ad)%C(reset) %C(white)<%an>%C(reset)%n  %s'
 	whoami = !git config user.name && git config user.email
 
 [include]
