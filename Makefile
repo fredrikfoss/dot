@@ -1,15 +1,15 @@
-CONF_DIR := home
-TARGET_DIR := $(HOME)
+SOURCE := home
+TARGET := $(HOME)
 
 CONFIGS := $(sort $(filter-out help list all,$(shell grep -E '[a-zA-Z0-9_-]+:$$' $(MAKEFILE_LIST) |\
 	cut -d ':' -f 1)) \
-	$(patsubst $(CONF_DIR)/.config/%,%,$(wildcard $(CONF_DIR)/.config/*)))
+	$(patsubst $(SOURCE)/.config/%,%,$(wildcard $(SOURCE)/.config/*)))
 
 define LINK
-	@mkdir -p $(dir $(TARGET_DIR)/$(1))
-	@test -L $(TARGET_DIR)/$(1) || rm -rf $(TARGET_DIR)/$(1)
-	@ln -sfnr $(CONF_DIR)/$(1) $(TARGET_DIR)/$(1)
-	@printf "%s -> %s\n" "$(notdir $(1))" "$(TARGET_DIR)/$(1)"
+	@mkdir -p $(dir $(TARGET)/$(1))
+	@test -L $(TARGET)/$(1) || rm -rf $(TARGET)/$(1)
+	@ln -sfnr $(SOURCE)/$(1) $(TARGET)/$(1)
+	@printf "%s -> %s\n" "$(notdir $(1))" "$(TARGET)/$(1)"
 endef
 
 help:
@@ -28,7 +28,7 @@ list:
 
 all: $(CONFIGS)
 
-$(patsubst $(CONF_DIR)/.config/%,%,$(wildcard $(CONF_DIR)/.config/*)):
+$(patsubst $(SOURCE)/.config/%,%,$(wildcard $(SOURCE)/.config/*)):
 	$(call LINK,.config/$@)
 
 bash:
@@ -42,9 +42,9 @@ vim:
 	$(call LINK,.vimrc)
 	$(call LINK,.vim/colors)
 	$(call LINK,.vim/autoload/plug.vim)
-	@mkdir -p $(TARGET_DIR)/.vim/undo
-	@mkdir -p $(TARGET_DIR)/.vim/spell
-	@mkdir -p $(TARGET_DIR)/.local/share/vim/plug
+	@mkdir -p $(TARGET)/.vim/undo
+	@mkdir -p $(TARGET)/.vim/spell
+	@mkdir -p $(TARGET)/.local/share/vim/plug
 
 bin snips templates:
 	$(call LINK,$@)
