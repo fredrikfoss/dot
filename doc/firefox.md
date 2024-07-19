@@ -37,6 +37,7 @@ privacy and security  ->  website privacy preference       ->  "everything"     
 privacy and security  ->  permissions                      ->  block popup windows                    ->  true
 privacy and security  ->  permissions                      ->  warn when websites try install addons  ->  true
 privacy and security  ->  firefox data collection and use  ->  "everything"                           ->  false
+privacy and security  ->  website advertising preferences  ->  "everything"                           ->  false
 privacy and security  ->  security                         ->  "everything"                           ->  true
 privacy and security  ->  security                         ->  https-only mode                        ->  enable in all windows)
 privacy and security  ->  dns over https                   ->  default protection

@@ -6,3 +6,4 @@
 * <https://git.pleshevski.ru/mynix/system>
 * <https://github.com/fredrikaverpil/dotfiles>
 * <https://git.j3s.sh/dotfiles>
+* <https://github.com/przepompownia/nvim-arctgx>

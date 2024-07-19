@@ -7,7 +7,6 @@ return {
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
         local lspconfig_ui_windows = require("lspconfig.ui.windows")
         local capabilities = cmp_nvim_lsp.default_capabilities()
-
         lspconfig_ui_windows.default_options.border = "single"
 
         vim.api.nvim_create_autocmd("LspAttach", {

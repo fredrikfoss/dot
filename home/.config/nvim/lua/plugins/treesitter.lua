@@ -21,6 +21,7 @@ return {
             ensure_installed = {
                 "arduino",
                 "asm",
+                "awk",
                 "bash",
                 "c",
                 "comment",
@@ -41,10 +42,12 @@ return {
                 "gowork",
                 "gpg",
                 "html",
+                "http",
                 "ini",
                 "java",
                 "jq",
                 "json",
+                "json5",
                 "jsonc",
                 "latex",
                 "llvm",
@@ -79,9 +82,9 @@ return {
                 "vim",
                 "vimdoc",
                 "yaml",
-                -- "zig",
-                -- "d2",
                 -- "asciidoc",
+                -- "d2",
+                -- "zig",
             },
 
             -- nvim-treesitter-textobjects

@@ -54,7 +54,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.splitkeep = "topline"
 vim.opt.listchars = { space = "*", trail = "*", nbsp = "*", extends = ">", precedes = "<", tab = "|>" }
-vim.opt.completeopt = { "menu", "menuone", "noselect", "noinsert" }
+vim.opt.completeopt = { "menu", "menuone", "noselect", "noinsert", "fuzzy" }
 
 -- Status line
 vim.opt.laststatus = 0
