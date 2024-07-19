@@ -1,5 +1,4 @@
-# browser lynx
-browser firefox
+browser lynx
 
 # Keymaps
 bind-key j down

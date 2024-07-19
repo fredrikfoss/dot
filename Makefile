@@ -9,21 +9,22 @@ define LINK
 	@mkdir -p $(dir $(TARGET_DIR)/$(1))
 	@test -L $(TARGET_DIR)/$(1) || rm -rf $(TARGET_DIR)/$(1)
 	@ln -sfnr $(CONF_DIR)/$(1) $(TARGET_DIR)/$(1)
-	@echo "$(notdir $(1)) -> $(TARGET_DIR)/$(1)"
+	@printf "%s -> %s\n" "$(notdir $(1))" "$(TARGET_DIR)/$(1)"
 endef
 
 help:
-	@echo "usage:"
-	@echo "    make [option]"
-	@echo
-	@echo "options:"
-	@echo "    help       # print this message"
-	@echo "    list       # print configs"
-	@echo "    all        # setup all configs"
-	@echo "    <config>   # setup single config"
+	@printf "%s\n"\
+		"usage:"\
+		"    make [option]"\
+		""\
+		"options:"\
+		"    <config>   # setup single config"\
+		"    all        # setup all configs"\
+		"    list       # print configs"\
+		"    help       # print this message"
 
 list:
-	@for config in $(CONFIGS); do echo $$config; done
+	@for config in $(CONFIGS); do printf "%s\n" "$$config"; done
 
 all: $(CONFIGS)
 

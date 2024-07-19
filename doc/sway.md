@@ -36,3 +36,5 @@
 * <https://github.com/BurntSushi/dotfiles>
 * <https://bitbucket.org/durdn/cfg/src/master>
 * <https://git.sr.ht/~sircmpwn/dotfiles>
+
+* [i3 screencast: containers and the tree data structure](https://youtu.be/AWA8Pl57UBY)

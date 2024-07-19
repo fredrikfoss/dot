@@ -1,15 +1,3 @@
-# Asahi Linux
-https://asahilinux.org/blog/index.xml "~Blog" ! asahilinux
-https://old.reddit.com/r/AsahiLinux/.rss "~Reddit" ! asahilinux
-https://social.treehouse.systems/@AsahiLinux.rss "~Mastadon" ! asahilinux
-https://rosenzweig.io/feed.xml "~Rosenzweig" ! asahilinux
-"query:Asahi Linux:tags # \"asahilinux\""
-
-https://hnrss.org/best
-https://reddit.com/r/programming/.rss "~r/programming"
-https://reddit.com/r/technology/.rss "~r/technology"
-https://rss.slashdot.org/Slashdot/slashdotMain
-https://hackaday.com/blog/feed
 https://christitus.com/index.xml
 https://pixls.us/feed.xml
 https://justine.lol/rss.xml
@@ -39,3 +27,6 @@ https://andrewkelley.me/rss.xml
 
 # LinuxLinks
 https://linuxlinks.com/feed
+
+# Conduition
+https://conduition.io/atom.xml
