@@ -55,12 +55,13 @@ return {
                 "taplo",
                 -- "yamlfmt",
                 "yamlls",
+                "tinymist",
                 "typos_lsp",
-                -- "typos" -- not working
+                -- "arduino_language_server",
                 -- "asm_lsp", -- not working
                 -- "rust_hdl",
-                -- "arduino_language_server",
-                -- "zls",
+                -- "typos", -- not working
+                -- "zls"
             },
         })
     end,

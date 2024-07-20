@@ -77,6 +77,7 @@ return {
                 "todotxt",
                 "toml",
                 "tsv",
+                "typst",
                 "verilog",
                 "vhdl",
                 "vim",

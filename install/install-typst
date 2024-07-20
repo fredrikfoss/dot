@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "With a Rust toolchain you can install a development version of typst with:
+
+    cargo install --git https://github.com/typst/typst --locked typst-cli"

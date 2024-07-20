@@ -25,6 +25,7 @@ widget.non-native-theme.gtk.scrollbar.round-thumb    ->  false
 browser.tabs.tabMinWidth                             ->  150
 browser.compactmode.show                             ->  true
 toolkit.legacyUserProfileCustomizations.stylesheets  ->  true
+permissions.default.shortcuts                        ->  2
 
 about:support                                        ->  Clear startup cache...
 ```

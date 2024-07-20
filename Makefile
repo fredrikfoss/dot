@@ -41,10 +41,8 @@ bash:
 vim:
 	$(call LINK,.vimrc)
 	$(call LINK,.vim/colors)
-	$(call LINK,.vim/autoload/plug.vim)
 	@mkdir -p $(TARGET)/.vim/undo
 	@mkdir -p $(TARGET)/.vim/spell
-	@mkdir -p $(TARGET)/.local/share/vim/plug
 
 bin snips templates:
 	$(call LINK,$@)

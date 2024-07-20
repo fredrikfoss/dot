@@ -45,7 +45,7 @@ download() {
 		jq -r '.assets[]
 			| select(.name | test("'"$OS"'.*'"$ARCH"'.*tar.gz$"; "i"))
 			| .browser_download_url') ||
-		die "unable to fetch donwload URL"
+		die "unable to fetch download URL"
 	path="$([[ -d $HOME/Downloads ]] && echo "$HOME/Downloads" || echo /tmp)/${url##*/}"
 	curl -L "$url" -o "$path"
 	tar -xf "$path" -C "$TEMPDIR"

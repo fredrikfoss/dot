@@ -62,6 +62,7 @@ return {
         lspconfig.perlnavigator.setup({ capabilities = capabilities })
         -- lspconfig.basedpyright.setup({ capabilities = capabilities })
         -- lspconfig.arduino_language_server.setup({ capabilities = capabilities })
+        lspconfig.tinymist.setup({ capabilities = capabilities })
 
         lspconfig.jedi_language_server.setup({
             capabilities = capabilities,

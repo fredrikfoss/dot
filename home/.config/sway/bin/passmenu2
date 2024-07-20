@@ -1,0 +1,47 @@
+#!/bin/bash
+
+shopt -s nullglob globstar
+
+prefix=${PASSWORD_STORE_DIR-~/.password-store}
+password_files=("$prefix"/**/*.gpg)
+password_files=("${password_files[@]#"$prefix"/}")
+password_files=("${password_files[@]%.gpg}")
+
+password_files_length=${#password_files[@]}
+password_files_length=$((password_files_length > 10 ? 10 : password_files_length))
+
+password=$(printf '%s\n' "${password_files[@]}" | wmenu -i -l "$password_files_length" -p "Pass:" "$@")
+[[ -n $password ]] || exit
+
+password_content=$(pass show "$password" 2>/dev/null)
+[[ -n $password_content ]] || exit
+
+keys=("Password")
+while IFS= read -r line; do
+	if [[ $line =~ ^([^[:space:]]+):\ .+ ]]; then
+		keys+=("${BASH_REMATCH[1]}")
+	fi
+done < <(echo "$password_content" | tail -n +2)
+
+if echo "$password_content" | grep -q "^otpauth://."; then
+	keys+=("OTP")
+fi
+
+keys_length=${#keys[@]}
+keys_length=$((keys_length > 10 ? 10 : keys_length))
+
+selection=$(printf '%s\n' "${keys[@]}" | wmenu -i -l "$keys_length" -p "Pass:" "$@")
+[[ -n $selection ]] || exit
+
+case $selection in
+	"Password")
+		echo "$password_content" | head -n 1 | tr -d '\n' | wtype -
+		;;
+	"OTP")
+		pass otp "$password" 2>/dev/null | tr -d '\n' | wtype -
+		;;
+	*)
+		value=$(echo "$password_content" | grep "^$selection: " | cut -d' ' -f2-)
+		echo -n "$value" | wtype -
+		;;
+esac

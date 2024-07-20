@@ -11,29 +11,7 @@ for cmd in fd rg fzf glow; do
 	fi
 done
 
-COMMAND=show
 PREFIX=${ZETDIR:-.}
-
-while [[ $# -gt 0 ]]; do
-	case $1 in
-		edit)
-			COMMAND="edit"
-			shift
-			;;
-		path)
-			COMMAND="path"
-			shift
-			;;
-		view)
-			COMMAND="show"
-			shift
-			;;
-		*)
-			PREFIX=$1
-			shift
-			;;
-	esac
-done
 
 selected_file=$(
 	cd "$PREFIX"
@@ -42,8 +20,4 @@ selected_file=$(
 		cut -d ':' -f 1
 )
 
-case $COMMAND in
-	edit) exec ${EDITOR:-vim} "$PREFIX/$selected_file" ;;
-	path) echo "$PREFIX/$selected_file" ;;
-	show) exec glow -l "$PREFIX/$selected_file" ;;
-esac
+exec echo "$selected_file"

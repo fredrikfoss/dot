@@ -94,6 +94,8 @@ EXEC 31 # Unix
 .md 32
 .mkd 32
 .adoc 32
+.typ 32
+.dj 32
 .h 32
 .c 32
 .C 32

@@ -2,6 +2,6 @@ profiles:
   uno:
     fqbn: arduino:avr:uno
     # port: /dev/ttyACM*
-defaul_profile: uno
-defaul_port: /dev/ttyACM0
-# defaul_port: /dev/ttyACM*
+default_profile: uno
+default_port: /dev/ttyACM0
+# default_port: /dev/ttyACM*

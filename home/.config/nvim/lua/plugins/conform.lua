@@ -6,6 +6,7 @@ return {
         local conform = require("conform")
         conform.setup({
             notify_on_error = false,
+            notify_no_formatters = false,
             formatters_by_ft = {
                 arduino = { "clang-format" },
                 asm = { "asmfmt" },
@@ -22,12 +23,12 @@ return {
                 toml = { "taplo" },
                 -- yaml = { "yamlfmt" },
                 yaml = { "yq" },
-                -- zig = { "zigfmt" },
+                zig = { "zigfmt" },
                 systemverilog = { "verible" },
                 perl = { "perltidy" },
                 vhdl = { "vsg" },
                 d2 = { "d2" },
-                -- markdown = { "deno_fmt" },
+                typst = { "typstyle", "trim_newlines" },
                 ["*"] = { "injected" },
                 ["_"] = { "trim_whitespace", "trim_newlines" },
             },

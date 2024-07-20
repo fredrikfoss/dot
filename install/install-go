@@ -62,7 +62,7 @@ download() {
 			| select(.arch == "'"$ARCH"'")
 			| select(.filename | endswith(".tar.gz"))
 			| .filename')" ||
-		die "unable to fetch donwload URL"
+		die "unable to fetch download URL"
 	path="$([[ -d $HOME/Downloads ]] && echo "$HOME/Downloads" || echo /tmp)/${url##*/}"
 	curl -L "$url" -o "$path"
 	check_sha "$path"
