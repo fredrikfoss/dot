@@ -6,9 +6,10 @@ return {
 
         lint.linters_by_ft = {
             go = { "golangcilint" },
+            vhdl = { "ghdl", "vsg" },
+            -- c = { "clang-tidy" },
             -- python = { "ruff" },
             -- yaml = { "yamllint" },
-            vhdl = { "ghdl", "vsg" },
         }
 
         vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "TextChanged", "InsertLeave" }, {

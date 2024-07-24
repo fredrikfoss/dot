@@ -63,8 +63,6 @@ return {
                 end,
             },
             completion = {
-                -- completeopt = "menu,menuone,preview,select",
-                -- completeopt = "menu,menuone,preview,noselect",
                 completeopt = "menu,menuone,noselect,noinsert",
             },
             preselect = cmp.PreselectMode.None, -- disable preselect for irrespective servers
@@ -73,8 +71,6 @@ return {
                 ["<C-p>"] = cmp.mapping.select_prev_item(), -- previous suggestion
                 ["<C-y>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-leader>"] = cmp.mapping.complete(), -- show completion suggestions
-                -- ["<C-d>"] = cmp.mapping.scroll_docs(4),
-                -- ["<C-u>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-l>"] = cmp.mapping(function()
                     if luasnip.expand_or_locally_jumpable() then
                         luasnip.expand_or_jump()
@@ -86,49 +82,17 @@ return {
                     end
                 end, { "i", "s" }),
             }),
-            -- window = {
-            --     completion = {
-            --         winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-            --         -- winhighlight = "Normal:CmpPmenu,Search:PmenuSel",
-            --         autocomplete = false,
-            --         scrollbar = false,
-            --         border = "single",
-            --         -- border = "none",
-            --     },
-            --     documentation = {
-            --         winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-            --         -- winhighlight = "Normal:CmpDoc",
-            --         border = "single",
-            --         -- border = "none",
-            --     },
-            -- },
             window = {
                 completion = {
-                    -- winhighlight = "Normal:CmpMenu,Search:None",
                     scrollbar = false,
-                    -- border = "none",
-                    -- border = "single",
-                    -- winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-                    -- winhighlight = "Normal:Pmenu,CursorLine:PmenuSel,Search:None",
-                    -- winhighlight = "Normal:CmpPmenu,Search:PmenuSel",
-                    -- winhighlight = "Normal:CmpPmenu",
                 },
                 documentation = {
-                    -- winhighlight = "Normal:CmpDoc,Search:None",
                     scrollbar = false,
-                    -- border = "none",
-                    -- border = "single",
-                    -- winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-                    -- winhighlight = "Normal:Pmenu,CursorLine:PmenuSel,Search:None",
-                    -- winhighlight = "Normal:CmpDoc",
                 },
             },
             view = {
                 entries = "custom",
             },
-            -- experimental = {
-            --     ghost_text = true,
-            -- },
         })
     end,
 }
