@@ -1,15 +1,15 @@
-SOURCE := home
-TARGET := $(HOME)
+SRC_DIR := home
+DEST_DIR := $(HOME)
 
-CONFIGS := $(sort $(filter-out help list all,$(shell grep -E '[a-zA-Z0-9_-]+:$$' $(MAKEFILE_LIST) |\
+CONFIG_TARGETS := $(sort $(filter-out help list all,$(shell grep -E '[a-zA-Z]+:$$' $(MAKEFILE_LIST) |\
 	cut -d ':' -f 1)) \
-	$(patsubst $(SOURCE)/.config/%,%,$(wildcard $(SOURCE)/.config/*)))
+	$(patsubst $(SRC_DIR)/.config/%,%,$(wildcard $(SRC_DIR)/.config/*)))
 
-define LINK
-	@mkdir -p $(dir $(TARGET)/$(1))
-	@test -L $(TARGET)/$(1) || rm -rf $(TARGET)/$(1)
-	@ln -sfnr $(SOURCE)/$(1) $(TARGET)/$(1)
-	@printf "%s -> %s\n" "$(notdir $(1))" "$(TARGET)/$(1)"
+define SYMLINK
+	@mkdir -p $(dir $(DEST_DIR)/$(1))
+	@test -L $(DEST_DIR)/$(1) || rm -rf $(DEST_DIR)/$(1)
+	@ln -sfnr $(SRC_DIR)/$(1) $(DEST_DIR)/$(1)
+	@printf "%s -> %s\n" "$(notdir $(1))" "$(DEST_DIR)/$(1)"
 endef
 
 help:
@@ -24,31 +24,31 @@ help:
 		"    help       # print this message"
 
 list:
-	@for config in $(CONFIGS); do printf "%s\n" "$$config"; done
+	@for config in $(CONFIG_TARGETS); do printf "%s\n" "$$config"; done
 
-all: $(CONFIGS)
+all: $(CONFIG_TARGETS)
 
-$(patsubst $(SOURCE)/.config/%,%,$(wildcard $(SOURCE)/.config/*)):
-	$(call LINK,.config/$@)
+$(patsubst $(SRC_DIR)/.config/%,%,$(wildcard $(SRC_DIR)/.config/*)):
+	$(call SYMLINK,.config/$@)
 
 bash:
-	$(call LINK,.profile)
-	$(call LINK,.bashrc)
-	$(call LINK,.inputrc)
-	$(call LINK,.dircolors)
-	$(call LINK,.infokey)
+	$(call SYMLINK,.profile)
+	$(call SYMLINK,.bashrc)
+	$(call SYMLINK,.inputrc)
+	$(call SYMLINK,.dircolors)
+	$(call SYMLINK,.infokey)
 
 vim:
-	$(call LINK,.vimrc)
-	$(call LINK,.vim/colors)
-	@mkdir -p $(TARGET)/.vim/undo
-	@mkdir -p $(TARGET)/.vim/spell
+	$(call SYMLINK,.vimrc)
+	$(call SYMLINK,.vim/colors)
+	@mkdir -p $(DEST_DIR)/.vim/undo
+	@mkdir -p $(DEST_DIR)/.vim/spell
 
 bin snips templates:
-	$(call LINK,$@)
+	$(call SYMLINK,$@)
 
 tmux:
-	$(call LINK,.tmux.conf)
+	$(call SYMLINK,.tmux.conf)
 
 gpg:
-	$(call LINK,.gnupg/gpg.conf)
+	$(call SYMLINK,.gnupg/gpg.conf)
