@@ -1,7 +1,7 @@
 SRC_DIR := home
 DEST_DIR := $(HOME)
 
-CONFIG_TARGETS := $(sort $(filter-out help list all,$(shell grep -E '[a-zA-Z]+:$$' $(MAKEFILE_LIST) |\
+CONFIG_TARGETS := $(sort $(filter-out help list all,$(shell grep -E '[a-zA-Z]+:$$' $(MAKEFILE_LIST) | \
 	cut -d ':' -f 1)) \
 	$(patsubst $(SRC_DIR)/.config/%,%,$(wildcard $(SRC_DIR)/.config/*)))
 
@@ -13,14 +13,14 @@ define SYMLINK
 endef
 
 help:
-	@printf "%s\n"\
-		"usage:"\
-		"    make [option]"\
-		""\
-		"options:"\
-		"    <config>   # setup single config"\
-		"    all        # setup all configs"\
-		"    list       # print configs"\
+	@printf "%s\n" \
+		"usage:" \
+		"    make [option]" \
+		"" \
+		"options:" \
+		"    <config>   # setup single config" \
+		"    all        # setup all configs" \
+		"    list       # print configs" \
 		"    help       # print this message"
 
 list:

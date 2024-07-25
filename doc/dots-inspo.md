@@ -7,3 +7,4 @@
 * <https://github.com/fredrikaverpil/dotfiles>
 * <https://git.j3s.sh/dotfiles>
 * <https://github.com/przepompownia/nvim-arctgx>
+* <https://github.com/ThePrimeagen/ansible>

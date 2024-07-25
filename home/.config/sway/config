@@ -31,6 +31,7 @@ for_window {
     [app_id="firefox"] inhibit_idle fullscreen
     [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable
     [app_id="mpv"] inhibit_idle focus
+    [app_id="qalculate-gtk"] floating enable
     [window_role="pop-up"] floating enable
     [window_role="bubble"] floating enable
     [window_role="dialog"] floating enable
@@ -281,3 +282,4 @@ bar {
 
 include ~/.config/sway/config.d/*.conf
 include /etc/sway/config.d/*
+include ~/.config/sway/config.local
