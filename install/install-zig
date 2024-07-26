@@ -43,7 +43,7 @@ check_sha() {
 	expected_sha=$(curl -sSL "https://$REPO/index.json" |
 		jq -r --arg arch "$ARCH" --arg os "$OS" '.master[$arch + "-" + $os].shasum') ||
 		die "Unable to fetch SHA hash"
-	actual_sha=$(shasum -a 256 "$1" | awk '{print $1}')
+	actual_sha=$(sha256sum "$1" | cut -d ' ' -f 1)
 	[[ $expected_sha != "$actual_sha" ]] &&
 		die "SHA checksum verification failed: expected $expected_sha, got $actual_sha"
 }

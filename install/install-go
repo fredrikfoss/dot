@@ -45,7 +45,7 @@ check_sha() {
 			| select(.filename | endswith(".tar.gz"))
 			| .sha256') ||
 		die "unable to fetch SHA hash"
-	actual_sha=$(shasum -a 256 "$1" | awk '{print $1}')
+	actual_sha=$(sha256sum "$1" | cut -d ' ' -f 1)
 	if [[ "$expected_sha" != "$actual_sha" ]]; then
 		echo "SHA checksum verification failed" >&2
 		echo "expected: $expected_sha" >&2
