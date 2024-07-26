@@ -44,7 +44,7 @@ check_sha() {
 		jq -r --arg arch "$ARCH" --arg os "$OS" '.master[$arch + "-" + $os].shasum') ||
 		die "Unable to fetch SHA hash"
 	actual_sha=$(sha256sum "$1" | cut -d ' ' -f 1)
-	[[ $expected_sha != "$actual_sha" ]] &&
+	[[ $expected_sha == "$actual_sha" ]] ||
 		die "SHA checksum verification failed: expected $expected_sha, got $actual_sha"
 }
 
