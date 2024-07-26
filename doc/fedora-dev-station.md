@@ -80,7 +80,7 @@ dnf copr enable agriffis/neovim-nightly
 dnf install -y neovim python3-neovim
 ```
 
-## Codecs and stuff
+### Codecs and stuff
 
 ```sh
 # Enable widevine (maybe asahi only)
@@ -95,7 +95,7 @@ sudo dnf group update core
 sudo dnf -y install libavcodec-freeworld
 ```
 
-## Development
+### Development
 
 ```sh
 sudo dnf install java-latest-openjdk
@@ -104,6 +104,13 @@ sudo dnf install go
 sudo dnf install rust
 sudo dnf install cargo
 ```
+
+### Maybe
+
+* hyprland copr
+* protonvpn copr
+* signal messenger copr
+* Docker
 
 Sources:
 
