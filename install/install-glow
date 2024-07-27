@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Until newer versions are released on a more regular basis, install with Go:"
+echo "  Run go install github.com/charmbracelet/glow@master"

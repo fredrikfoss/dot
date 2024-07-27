@@ -1,15 +1,15 @@
 SRC_DIR := home
 DEST_DIR := $(HOME)
 
-CONFIG_TARGETS := $(sort $(filter-out help list all,$(shell grep -E '[a-zA-Z]+:$$' $(MAKEFILE_LIST) | \
-	cut -d ':' -f 1)) \
-	$(patsubst $(SRC_DIR)/.config/%,%,$(wildcard $(SRC_DIR)/.config/*)))
+CONFIG_TARGETS := $(sort $(filter-out help list all, \
+	$(patsubst %:,%, $(shell grep -E '[a-zA-Z]+:$$' Makefile))) \
+	$(notdir $(wildcard $(SRC_DIR)/.config/*)))
 
 define SYMLINK
 	@mkdir -p $(dir $(DEST_DIR)/$(1))
-	@test -L $(DEST_DIR)/$(1) || rm -rf $(DEST_DIR)/$(1)
-	@ln -sfnr $(SRC_DIR)/$(1) $(DEST_DIR)/$(1)
-	@printf "%s -> %s\n" "$(notdir $(1))" "$(DEST_DIR)/$(1)"
+	@rm -rf $(DEST_DIR)/$(1)
+	@ln -sfr $(SRC_DIR)/$(1) $(DEST_DIR)/$(1)
+	@printf "%s -> %s\n" $(notdir $(1)) $(DEST_DIR)/$(1)
 endef
 
 help:
@@ -24,11 +24,11 @@ help:
 		"    help       # print this message"
 
 list:
-	@for config in $(CONFIG_TARGETS); do printf "%s\n" "$$config"; done
+	@printf "%s\n" $(CONFIG_TARGETS)
 
 all: $(CONFIG_TARGETS)
 
-$(patsubst $(SRC_DIR)/.config/%,%,$(wildcard $(SRC_DIR)/.config/*)):
+$(notdir $(wildcard $(SRC_DIR)/.config/*)):
 	$(call SYMLINK,.config/$@)
 
 bash:
@@ -42,7 +42,6 @@ vim:
 	$(call SYMLINK,.vimrc)
 	$(call SYMLINK,.vim/colors)
 	@mkdir -p $(DEST_DIR)/.vim/undo
-	@mkdir -p $(DEST_DIR)/.vim/spell
 
 bin snips templates:
 	$(call SYMLINK,$@)
