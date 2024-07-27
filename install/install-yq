@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "go install github.com/mikefarah/yq/v4@latest"

@@ -3,34 +3,37 @@
 shopt -s nullglob globstar
 
 prefix=${PASSWORD_STORE_DIR-~/.password-store}
-password_files=("$prefix"/**/*.gpg)
-password_files=("${password_files[@]#"$prefix"/}")
-password_files=("${password_files[@]%.gpg}")
+pass_files=("$prefix"/**/*.gpg)
+pass_files=("${pass_files[@]#"$prefix"/}")
+pass_files=("${pass_files[@]%.gpg}")
 
-password_files_length=${#password_files[@]}
-password_files_length=$((password_files_length > 10 ? 10 : password_files_length))
+pass_files_lenght=${#pass_files[@]}
+pass_files_lenght=$((pass_files_lenght > 10 ? 10 : pass_files_lenght))
 
-password=$(printf '%s\n' "${password_files[@]}" | wmenu -i -l "$password_files_length" -p "Pass:" "$@")
+password=$(printf '%s\n' "${pass_files[@]}" | wmenu -i -l "$pass_files_lenght" -p "Pass:" "$@")
 [[ -n $password ]] || exit
 
 password_content=$(pass show "$password" 2>/dev/null)
 [[ -n $password_content ]] || exit
 
 keys=("Password")
+otp_found=false
 empty_line_found=false
+
 while IFS= read -r line; do
 	if [[ -z $line ]]; then
 		empty_line_found=true
-	elif [[ $line =~ ^[^[:space:]].*:[[:space:]].+ ]] && ! $empty_line_found; then
-		keys+=("${BASH_REMATCH[1]}")
-		# key="${line%%:*}"
-		# keys+=("$key")
+
+	elif ! $empty_line_found; then
+		if [[ $otp_found = false && $line =~ ^otpauth:// ]]; then
+			keys+=("OTP")
+			otp_found=true
+
+		elif [[ $line =~ ^([^[:space:]]+):[[:space:]]+.+ ]]; then
+			keys+=("${BASH_REMATCH[1]}")
+		fi
 	fi
 done < <(echo "$password_content" | tail -n +2)
-
-if echo "$password_content" | grep -q "^otpauth://."; then
-	keys+=("OTP")
-fi
 
 keys_length=${#keys[@]}
 keys_length=$((keys_length > 10 ? 10 : keys_length))

@@ -68,3 +68,8 @@ Also set useragent for required sites. One way to do this is to install the [Use
 * `https://start.duckduckgo.com/?q=%s`
 * `https://lite.duckduckgo.com/lite/?q=%s`
 * `https://html.duckduckgo.com/html/?q=%s`
+
+## Related / todo
+
+* <https://github.com/yokoffing/BetterFox>
+* <https://github.com/yokoffing/filterlists#guidelines>

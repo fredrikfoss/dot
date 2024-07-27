@@ -155,7 +155,7 @@ bindsym $mod+minus scratchpad show
 # Resize containers
 #
 
-mode "resize" {
+mode "Resize" {
     bindsym $left resize shrink width 10
     bindsym $down resize grow height 10
     bindsym $up resize shrink height 10
@@ -166,7 +166,7 @@ mode "resize" {
     bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+bindsym $mod+r mode "Resize"
 
 #
 # Power management
@@ -208,7 +208,8 @@ bindsym $mod+Shift+s mode "$screenshot"
 # Password menu
 #
 
-bindsym $mod+Shift+p exec ~/.config/sway/bin/passmenu
+bindsym $mod+p exec ~/.config/sway/bin/passmenu
+bindsym $mod+Shift+p exec ~/.config/sway/bin/passmenu2
 
 #
 # Brightness control

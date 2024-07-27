@@ -48,6 +48,7 @@ sudo dnf -y install wl-clipboard           # clipboard
 sudo dnf -y install bluez                  # bluetooth
 sudo dnf -y install bluez-tools            # bluetooth tools
 sudo dnf -y install blueman                # bluetooth manager
+# sudo dnf -y install greetd                 # login manager
 
 # Status bar
 sudo dnf -y copr enable atim/i3status-rust
@@ -69,8 +70,9 @@ sudo dnf -y install qalculate              # calculator
 sudo dnf -y install qalculate-gtk          # calculator
 sudo dnf -y install wtype                  # keybord typing simulation
 sudo dnf -y install fastfetch
-# sudo dnf -y install croc                   # file transfer tool
-# sudo dnf -y install greetd                 # login manager
+sudo dnf -y install croc                   # file transfer tool
+sudo dnf -y install jq
+sudo dnf -y install yq
 
 # Neovim and deps.
 sudo dnf install -y fswatch
@@ -103,6 +105,7 @@ sudo dnf install lua
 sudo dnf install go
 sudo dnf install rust
 sudo dnf install cargo
+sudo dnf install just
 ```
 
 ### Maybe
@@ -111,6 +114,8 @@ sudo dnf install cargo
 * protonvpn copr
 * signal messenger copr
 * Docker
+* Ansible
+* Nix
 
 Sources:
 

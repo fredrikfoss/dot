@@ -116,11 +116,7 @@ export DOCKER_CONFIG="$HOME/.config/docker"
 export MACHINE_STORAGE_PATH="$HOME/.local/share/docker-machine"
 export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
 
-# export ARDUINO_CONFIG_FILE="$HOME/.config/arduino/arduino-cli.yaml"
-# export ARDUINO_DIRECTORIES_DATA="$HOME/.local/share/arduino"
-# export ARDUINO_DIRECTORIES_DOWNLOADS="$HOME/.cache/arduino/staging"
-# export ARDUINO_DIRECTORIES_USER="$HOME/.local/share/arduino/sketchbook"
-# # export ARDUINO_DIRECTORIES_BUILTIN_LIBRARIES="$HOME/.local/share/arduino/libraries"
+export ARDUINO_CONFIG_FILE="$HOME/.config/arduino/arduino-cli.yaml"
 
 if [[ -d /.vim/spell ]]; then
 	export VIMSPELL=("$HOME/.vim/spell/*.add")

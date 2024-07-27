@@ -87,8 +87,8 @@ set conceallevel=0
 set number
 set norelativenumber
 set nrformats=bin,hex
+set signcolumn=no
 " set signcolumn=number
-" set signcolumn=yes
 set pumheight=6
 set textwidth=72
 set scrolloff=0
