@@ -32,7 +32,6 @@ export USER="${USER:-$(whoami)}"
 export GITUSER=fredrikfoss
 export REPOS="$HOME/repo"
 export GHREPOS="$REPOS/github.com/$GITUSER"
-export DOTFILES="$GHREPOS/dot"
 export SNIPPETS="$HOME/snips"
 export LAB="$GHREPOS/lab"
 export HELP_BROWSER=lynx
@@ -50,22 +49,13 @@ export VIRTUALMACHINES="$HOME/VirtualMachines"
 export WORKSPACES="$HOME/Workspaces" # container home dirs for mounting
 export ZETDIR="$GHREPOS/zet"
 export TMPDIR="${XDG_RUNTIME_DIR:-/tmp}"
-# export TERM='xterm-256color'
-export TERMINFO="$HOME/.local/share/terminfo"
-export TERMINFO_DIRS="$HOME/.local/share/terminfo:/usr/share/terminfo"
 export PAGER='less'
 export MANPAGER='less --use-color'
-export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export FFMPEG_DATADIR="$HOME/.config/ffmpeg"
 export K9SCONFIG="$HOME/.config/k9s"
 export KUBECONFIG="$HOME/.config/kube"
 export KUBECACHEDIR="$HOME/.cache/kube"
 export OLLAMA_MODELS="$HOME/.local/share/ollama/models"
-# export KDEHOME="$HOME/.config/kde"
-export GTK_RC_FILES="$HOME/.config/gtk-1.0/gtkrc"
-export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc"
-# export MYUNITSFILE="$HOME/.config/units/units"
-# export WGETRC="$HOME/.config/wget/wgetrc"
 
 if _have nvim; then
 	export EDITOR='nvim'
@@ -80,8 +70,6 @@ fi
 export CFLAGS="-Wall -Wextra -Werror -O0 -g -fsanitize=address -fno-omit-frame-pointer -finstrument-functions"
 
 # export GOPATH="$HOME/.local/share/go"
-# export GOMODCACHE="$HOME/.cache/go/mod"
-# export GOCACHE="$HOME/.cache/go/build"
 export GOBIN="$HOME/.local/bin"
 export GOPRIVATE="github.com/$GITUSER/*,gitlab.com/$GITUSER/*"
 export GOPROXY=direct
@@ -92,13 +80,6 @@ export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$HOME/.config/java"
 export RUSTUP_HOME="$HOME/.local/share/rustup"
 export CARGO_HOME="$HOME/.local/share/cargo"
 export CARGO_INSTALL_ROOT="$HOME/.local"
-
-export NODE_REPL_HISTORY="$HOME/.local/share/node_repl_history"
-export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
-export npm_config_prefix="$HOME/.local/share/npm"
-export npm_config_cache="$HOME/.cache/npm"
-# export npm_config_init-module="$HOME/.config/npm/npm-init.js"
-# export npm_config_logs-dir="$HOME/.local/state/npm/logs"
 
 export PYTHONDONTWRITEBYTECODE=2
 export PYTHON_HISTORY="$HOME/.local/state/python/history"
@@ -201,15 +182,9 @@ export GPG_TTY
 
 # PINENTRY_PROGRAM= # might not need after all with rage
 
-# ------------------------ pass/passage/pa/gopass --------------------
+# ---------------------------- pass/passage --------------------------
 
-export PASSAGE_DIR="$HOME/.passage/store"
-export PASSAGE_IDENTITIES="$HOME/.passage/identities"
 # [[ -f $HOME/.local/bin/rage ]] && export PASSAGE_AGE="$HOME/.local/bin/rage"
-
-# export PA_DIR="$HOME/.pa/passwords"
-export PA_LENGTH=25
-export PA_PATTERN='[:graph:]'
 
 # ------------------------------- pager ------------------------------
 
@@ -225,30 +200,6 @@ fi
 # export LESS="-FR --use-color"
 export LESS="-FR"
 export LESSHISTFILE=-
-
-# export LESS_TERMCAP_mb=$'\e[35m' # begin bold
-# export LESS_TERMCAP_md=$'\e[33m' # begin blink
-# export LESS_TERMCAP_so=$'\e[34m' # begin reverse video
-# export LESS_TERMCAP_us=$'\e[04m' # begin underline
-# export LESS_TERMCAP_me=$'\e[0m'  # reset bold/blink
-# export LESS_TERMCAP_se=$'\e[0m'  # reset reverse video
-# export LESS_TERMCAP_ue=$'\e[0m'  # reset underline
-
-# export LESS_TERMCAP_mb=$'\e[35m' # begin bold
-# export LESS_TERMCAP_md=$'\e[33m' # begin blink
-# export LESS_TERMCAP_so=$'\e[34m' # begin reverse video
-# export LESS_TERMCAP_us=$'\e[04m' # begin underline
-# export LESS_TERMCAP_me=$'\e[0m'  # reset bold/blink
-# export LESS_TERMCAP_se=$'\e[0m'  # reset reverse video
-# export LESS_TERMCAP_ue=$'\e[0m'  # reset underline
-
-# export LESS_TERMCAP_mb=$'\e[1;32m'
-# export LESS_TERMCAP_md=$'\e[1;32m'
-# export LESS_TERMCAP_me=$'\e[0m'
-# export LESS_TERMCAP_se=$'\e[0m'
-# export LESS_TERMCAP_so=$'\e[01;33m'
-# export LESS_TERMCAP_ue=$'\e[0m'
-# export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 # ----------------------------- dircolors ----------------------------
 
@@ -289,24 +240,18 @@ PROMPT_COMMAND="__ps1"
 # ------------------------------ aliases -----------------------------
 
 unalias -a
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
 alias todo='${EDITOR:-vi} ~/Documents/todo.md'
-alias '?'=duck
-alias '??'=feep
-alias '???'=marg
-# alias notes='cd ~/ProtonDrive/notes && nvim index.md'
-alias notes='cd ~/Documents/notes && ${EDITOR:-vi} index.md'
 alias ip='ip --color=auto'
 alias free='free -h'
 alias ls='ls -hF --color=auto --time-style iso'
 alias l='ls -lahF --color=auto --time-style iso'
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 alias rg='rg -Suu'
 alias fd='fd -u'
 alias tree='tree -a -I .git/'
@@ -315,26 +260,20 @@ alias diff='diff --color=auto'
 alias temp='cd $(mktemp -d) && pwd'
 alias view='${EDITOR:-vi} -R'
 alias clear='printf "\e[H\e[2J"'
-alias c='printf "\e[H\e[2J"'
+alias c=clear
 alias more='less'
 alias less='less --use-color'
-alias wget='wget --hsts-file="$HOME/.cache/wget/wget-hsts"'
-alias goclean='go clean -i -r -cache -modcache -testcache -fuzzcache'
-# alias update='sudo dnf check; sudo dnf makecache; sudo dnf upgrade --refresh; sudo dnf distro-sync; sudo dnf autoremove'
-alias cht='cht --shell'
-# alias arduino-cli='arduino-cli --config-file "$HOME/.config/arduino15/arduino-cli.yaml"'
-alias infopath='echo -e "${INFOPATH//:/\\n}"'
-alias bp='upower -i $(upower -e |grep "/battery") |grep percentage'
-
 alias links='lynx -listonly -nonumbers -dump'
+alias goclean='go clean -i -r -cache -modcache -testcache -fuzzcache'
+
 alias nv='nvim'
 _have vim && alias vi=vim
 
-alias gpt='OPENAI_API_KEY=$(pass openai.com/api-key) gpt'
-alias gptc='OPENAI_API_KEY=$(pass openai.com/api-key) gptc'
-alias yt2sum='OPENAI_API_KEY=$(pass openai.com/api-key) yt2sum'
-alias urlsum='OPENAI_API_KEY=$(pass openai.com/api-key) urlsum'
-alias convertcurrency='EXCHANGERATE_API_KEY=$(pass exchangerate-api.com/api-key) convertcurrency'
+alias gpt='OPENAI_API_KEY=$(passage openai.com/api-key) gpt'
+alias gptc='OPENAI_API_KEY=$(passage openai.com/api-key) gptc'
+alias yt2sum='OPENAI_API_KEY=$(passage openai.com/api-key) yt2sum'
+alias urlsum='OPENAI_API_KEY=$(passage openai.com/api-key) urlsum'
+alias convertcurrency='EXCHANGERATE_API_KEY=$(passage exchangerate-api.com/api-key) convertcurrency'
 
 # ----------------------------- functions ----------------------------
 
@@ -371,47 +310,14 @@ clone() {
 	cd "$name"
 } && export -f clone
 
-destroy() {
-	local file="$1"
-	[[ ! -f $file ]] && echo "$file not found" >&2 && return 1
-	read -p "destroy file? (y/n) " -n 1 -r && echo
-	[[ $REPLY =~ ^[Yy]$ ]] && shred -vzun 100 "$file"
-} && export -f destroy
-
-extract() {
-	local file="$1"
-	[[ ! -f $file ]] && echo "$file not found" >&2 && return 1
-	case "$file" in
-		*.tar.bz2) tar xjf "$1" ;;
-		*.tar.gz) tar xzf "$1" ;;
-		*.bz2) bunzip2 "$1" ;;
-		*.rar) unrar x "$1" ;;
-		*.gz) gunzip "$1" ;;
-		*.tar) tar xf "$1" ;;
-		*.tbz2) tar xjf "$1" ;;
-		*.tgz) tar xzf "$1" ;;
-		*.zip) unzip "$1" ;;
-		*.Z) uncompress "$1" ;;
-		*.7z) 7z x "$1" ;;
-		*) echo "Unknown compression: $file" ;;
-	esac
-} && export -f extract
-
-# dirtyupdate() {
+# fedoraupdate() {
 # 	local commands=("check" "clean all" "makecache" "check-upgrade"
 # 		"upgrade" "distro-sync" "autoremove" "makecache")
 # 	for cmd in "${commands[@]}"; do
 # 		IFS=' ' read -r -a cmd_args <<<"$cmd"
 # 		sudo dnf5 -y "${cmd_args[@]}"
 # 	done
-# } && export -f dirtyupdate
-
-fcd() {
-	local dirs
-	dirs=$(fd -t d --strip-cwd-prefix)
-	dir=$(fzf --height 40% --reverse +m <<<"$dirs") || return
-	cd "$dir"
-} && export -f fcd
+# } && export -f fedoraupdate
 
 # ----------------- external dependencies/completions ----------------
 
@@ -420,11 +326,10 @@ if [[ -z $BASH_COMPLETION_VERSINFO ]]; then
 	_source_if /usr/share/bash-completion/bash_completion
 fi
 
-owncomp=(zet keg auth pomo config sshkey vic pdf ws ./build build b ./setup
-	./cmd run ./run foo ./foo cmds ./cmds z bonzai openapi)
+owncomp=(zet keg sshkey vic pdf ws)
 
-for i in "${owncomp[@]}"; do
-	complete -C "$i" "$i"
+for cmd in "${owncomp[@]}"; do
+	complete -C "$cmd" "$cmd"
 done
 
 # -------------------- personalized configurations -------------------

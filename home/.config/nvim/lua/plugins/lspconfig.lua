@@ -49,7 +49,6 @@ return {
 
         -- lspconfig.harper_ls.setup({ capabilities = capabilities })
         -- lspconfig.vale_ls.setup({ capabilities = capabilities })
-        -- lspconfig.typos_lsp.setup({ capabilities = capabilities })
         lspconfig.jsonls.setup({ capabilities = capabilities })
         lspconfig.verible.setup({ capabilities = capabilities })
         -- lspconfig.zls.setup({ capabilities = capabilities })

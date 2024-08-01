@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "sudo dnf5 install pcsc-lite"
+echo "sudo dnf5 install pcsc-lite-devel"
+echo "cargo install age-plugin-yubikey"

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+passage="/home/$(whoami)/.local/bin/passage"
+
+shopt -s nullglob globstar
+
+prefix=${PASSAGE_DIR-~/.passage/store}
+password_files=("$prefix"/**/*.age)
+password_files=("${password_files[@]#"$prefix"/}")
+password_files=("${password_files[@]%.age}")
+
+password=$(printf '%s\n' "${password_files[@]}" | wmenu -i -l10 -p "Passage:" "$@")
+
+[[ -n $password ]] || exit
+
+# passage show -c "$password" 2>/dev/null
+"$passage" show "$password" 2>/dev/null | head -n 1 | tr -d '\n' | wtype -
+# passage otp "$password" 2>/dev/null | tr -d '\n' | wtype -

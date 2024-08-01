@@ -37,10 +37,10 @@ return {
                 "gopls",
                 "golangci-lint",
                 "gofumpt",
-                "goimports",
-                "gomodifytags",
-                "golines",
-                "delve",
+                -- "goimports",
+                -- "gomodifytags",
+                -- "golines",
+                -- "delve",
 
                 -- "clangd", -- not working
                 "clang-format",
@@ -56,11 +56,9 @@ return {
                 -- "yamlfmt",
                 "yamlls",
                 "tinymist",
-                "typos_lsp",
                 -- "arduino_language_server",
                 -- "asm_lsp", -- not working
                 -- "rust_hdl",
-                -- "typos", -- not working
                 -- "zls"
             },
         })

@@ -14,11 +14,14 @@ gaps outer 0
 default_border normal 0
 focus_follows_mouse no
 
-exec darkman run
+# exec darkman run
 exec_always mako
 exec_always blueman-applet
 exec_always nm-applet --indicator
 # exec_always "${XDG_CONFIG_HOME:-$HOME/.config}/sway/bin/clamshell"
+
+exec_always gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+exec_always gsettings set org.gnome.desktop.interface enable-animations "false"
 
 exec_always killall swayidle; swayidle -w \
     timeout 900 'swaylock -f -c 000000' \
@@ -31,6 +34,7 @@ for_window {
     [shell="xwayland"] title_format "[X] %title"
     [app_id="firefox"] inhibit_idle fullscreen
     [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable
+    [app_id="blueman-manager"] floating enable
     [app_id="mpv"] inhibit_idle focus
     [app_id="qalculate-gtk"] floating enable
     [window_role="pop-up"] floating enable
@@ -208,8 +212,8 @@ bindsym $mod+Shift+s mode "$screenshot"
 # Password menu
 #
 
-bindsym $mod+p exec ~/.config/sway/bin/passmenu
-bindsym $mod+Shift+p exec ~/.config/sway/bin/passmenu2
+bindsym $mod+p exec ~/.config/sway/bin/passage-wmenu
+bindsym $mod+Shift+p exec ~/.config/sway/bin/passage-wmenu2
 
 #
 # Brightness control

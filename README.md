@@ -1,24 +1,24 @@
-# Personal dotfiles and scripts
+# Personal configs and scripts
 
 For read-only access:
 
-```sh
-git clone https://github.com/fredrikfoss/dot.git
-cd dot
+```
+git clone https://github.com/fredrikfoss/cfg.git
+cd cfg
 make
 ```
 
 For read-write access (requires existing SSH key pair):
 
-```sh
-git clone git@github.com:fredrikfoss/dot.git
-cd dot
+```
+git clone git@github.com:fredrikfoss/cfg.git
+cd cfg
 make
 ```
 
 For read-write access on remote system, generate extra SSH key pair with long but memorable passphrase, add to GitHub account and copy to (or generate on) remote:
 
-```sh
+```
 ssh-keygen -f /tmp/somekey -t ed25519 -a 100 -C "remotesystem"
 # give a passphrase when prompted
 # add key to GitHub account

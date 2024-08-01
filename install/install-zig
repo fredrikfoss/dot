@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/bash -
+set -o nounset
 
 # Installs the latest nightly build of zig from https://ziglang.org/download to
 # ~/.local without requiring root access.
@@ -12,15 +12,13 @@ declare NAME=zig
 declare TARGETDIR="$HOME/.local"
 declare OS ARCH
 declare TEMPDIR
-TEMPDIR=$(mktemp -d)
-trap 'rm -rf -- "$TEMPDIR"' EXIT
 
 die() {
 	echo "$@" >&2
 	exit 1
 }
 
-init_env() {
+determine_os() {
 	OS=$(uname -s)
 	case $OS in
 		Linux*) OS=linux ;;
@@ -28,7 +26,9 @@ init_env() {
 		MINGW* | MSYS*) OS=windows ;;
 		*) die "Unsupported OS: $OS" ;;
 	esac
+}
 
+determine_arch() {
 	ARCH=$(uname -m)
 	case $ARCH in
 		aarch64) ARCH=aarch64 ;;
@@ -38,26 +38,26 @@ init_env() {
 	esac
 }
 
-check_sha() {
-	local expected_sha actual_sha
-	expected_sha=$(curl -sSL "https://$REPO/index.json" |
+verify_checksum() {
+	local expected_checksum actual_checksum
+	expected_checksum=$(curl -sSL "https://$REPO/index.json" |
 		jq -r --arg arch "$ARCH" --arg os "$OS" '.master[$arch + "-" + $os].shasum') ||
-		die "Unable to fetch SHA hash"
-	actual_sha=$(sha256sum "$1" | cut -d ' ' -f 1)
-	[[ $expected_sha == "$actual_sha" ]] ||
-		die "SHA checksum verification failed: expected $expected_sha, got $actual_sha"
+		die "Unable to fetch checksum"
+	actual_checksum=$(sha256sum "$1" | cut -d ' ' -f 1)
+	[[ $expected_checksum == "$actual_checksum" ]] ||
+		die "Checksum verification failed: expected $expected_checksum, got $actual_checksum"
 }
 
 download() {
 	local url path
 	url=$(curl -sSL "https://$REPO/index.json" |
 		jq -r --arg arch "$ARCH" --arg os "$OS" '.master[$arch + "-" + $os].tarball') ||
-		die "unable to fetch download URL"
+		die "Unable to fetch download URL"
 	echo "$url"
 	path="$([[ -d $HOME/Downloads ]] && echo "$HOME/Downloads" || echo /tmp)/${url##*/}"
 	echo "$path"
 	curl -L "$url" -o "$path"
-	check_sha "$path"
+	verify_checksum "$path"
 	tar -xf "$path" -C "$TEMPDIR"
 	echo "Downloaded tarball to $path" >&2
 }
@@ -69,8 +69,13 @@ install() {
 	echo "Installed $NAME to $TARGETDIR" >&2
 }
 
-init_env
+TEMPDIR=$(mktemp -d)
+trap 'rm -rf -- "$TEMPDIR"' EXIT
+
+determine_os
+determine_arch
 download
+
 mkdir -p "$TARGETDIR"
 rm -rf "${TARGETDIR:?}/$NAME"
 install

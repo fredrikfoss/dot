@@ -48,6 +48,8 @@ sudo dnf -y install wl-clipboard           # clipboard
 sudo dnf -y install bluez                  # bluetooth
 sudo dnf -y install bluez-tools            # bluetooth tools
 sudo dnf -y install blueman                # bluetooth manager
+sudo dnf -y install htop
+sudo dnf -y install powertop
 # sudo dnf -y install greetd                 # login manager
 
 # Status bar
@@ -68,7 +70,7 @@ sudo dnf -y install ncspot                 # spotify client
 sudo dnf -y install darkman                # dark mode manager
 sudo dnf -y install qalculate              # calculator
 sudo dnf -y install qalculate-gtk          # calculator
-sudo dnf -y install wtype                  # keybord typing simulation
+sudo dnf -y install wtype                  # keyboard typing simulation
 sudo dnf -y install fastfetch
 sudo dnf -y install croc                   # file transfer tool
 sudo dnf -y install jq
@@ -119,7 +121,7 @@ sudo dnf install just
 
 Sources:
 
-* <https://redd.it/1ebxxu5>
-* <https://rpmfusion.org/configuration>
-* <https://docs.fedoraproject.org/en-US/fedora-asahi-remix/faq>
-* <https://docs.fedoraproject.org/en-US/quick-docs/rpmfusion-setup>
+* https://redd.it/1ebxxu5
+* https://rpmfusion.org/configuration
+* https://docs.fedoraproject.org/en-US/fedora-asahi-remix/faq
+* https://docs.fedoraproject.org/en-US/quick-docs/rpmfusion-setup

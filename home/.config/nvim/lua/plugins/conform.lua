@@ -14,6 +14,7 @@ return {
                 -- go = { "goimports", "gofmt" }
                 -- go = { "goimports", "golines", "gofumpt" },
                 -- java = { "google-java-format" },
+                java = { "clang-format" },
                 -- json = { "prettier" },
                 json = { "jq" },
                 jsonc = { "jq" },
@@ -28,6 +29,7 @@ return {
                 perl = { "perltidy" },
                 vhdl = { "vsg" },
                 d2 = { "d2" },
+                markdown = { "markdownfmt" },
                 typst = { "typstyle", "trim_newlines" },
                 ["*"] = { "injected" },
                 ["_"] = { "trim_whitespace", "trim_newlines" },

@@ -3,12 +3,8 @@
 	email = fredrikfoss@fr.urbanpets.no
 	signingkey = 0x5B2A8AA1AB4EA06C
 
-[github]
-	user = fredrikfoss
-	name = Fredrik Foss-Indrehus
-
 [commit]
-	gpgsign = true
+	# gpgSign = true
 	verbose = true
 
 [core]
@@ -52,4 +48,3 @@
 
 [include]
 	path = ~/.config/git/config_local
-	path = ~/.gitconfig_local

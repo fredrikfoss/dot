@@ -1,19 +1,21 @@
 #!/bin/bash
 
+passage="/home/$(whoami)/.local/bin/passage"
+
 shopt -s nullglob globstar
 
-prefix=${PASSWORD_STORE_DIR-~/.password-store}
-pass_files=("$prefix"/**/*.gpg)
+prefix=${PASSAGE_DIR-~/.passage/store}
+pass_files=("$prefix"/**/*.age)
 pass_files=("${pass_files[@]#"$prefix"/}")
-pass_files=("${pass_files[@]%.gpg}")
+pass_files=("${pass_files[@]%.age}")
 
 pass_files_lenght=${#pass_files[@]}
 pass_files_lenght=$((pass_files_lenght > 10 ? 10 : pass_files_lenght))
 
-password=$(printf '%s\n' "${pass_files[@]}" | wmenu -i -l "$pass_files_lenght" -p "Pass:" "$@")
+password=$(printf '%s\n' "${pass_files[@]}" | wmenu -i -l "$pass_files_lenght" -p "Passage:" "$@")
 [[ -n $password ]] || exit
 
-password_content=$(pass show "$password" 2>/dev/null)
+password_content=$("$passage" show "$password" 2>/dev/null)
 [[ -n $password_content ]] || exit
 
 keys=("Password")
@@ -38,7 +40,7 @@ done < <(echo "$password_content" | tail -n +2)
 keys_length=${#keys[@]}
 keys_length=$((keys_length > 10 ? 10 : keys_length))
 
-selection=$(printf '%s\n' "${keys[@]}" | wmenu -i -l "$keys_length" -p "Pass:" "$@")
+selection=$(printf '%s\n' "${keys[@]}" | wmenu -i -l "$keys_length" -p "Passage:" "$@")
 [[ -n $selection ]] || exit
 
 case $selection in
@@ -46,7 +48,7 @@ case $selection in
 		echo "$password_content" | head -n 1 | tr -d '\n' | wtype -
 		;;
 	"OTP")
-		pass otp "$password" 2>/dev/null | tr -d '\n' | wtype -
+		"$passage" otp "$password" 2>/dev/null | tr -d '\n' | wtype -
 		;;
 	*)
 		value=$(echo "$password_content" | grep "^$selection: " | cut -d' ' -f2-)

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# TODO: Install from GH releases instead
+
+echo "Install with Go:"
+echo "go install github.com/Kunde21/markdownfmt/v3/cmd/markdownfmt@latest"
